@@ -1,18 +1,17 @@
-import express from 'express';
+import express, {Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import { PORT } from './DB/credential';
 import ConectDB from './DB/connect';
 
 const app = express();
-const cndb = new ConectDB();
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use("/server", require("./routes/users.routes"))
-
+app.use("/server", cors(), require("./routes/users.route"))
 app.listen(PORT, ()=>{
     console.log(`Server on port ${PORT}`);
-    cndb.isConnect();
+    new ConectDB().isConnect()
 });

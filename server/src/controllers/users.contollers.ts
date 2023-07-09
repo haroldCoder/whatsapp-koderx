@@ -1,3 +1,4 @@
+import { Query, QueryResult } from "pg";
 import ConectDB from "../DB/connect";
 import {Response, Request} from "express"
 
@@ -12,18 +13,15 @@ export default class UsersControllers extends ConectDB{
         super();
         this.req = req;
         this.res = res;
+        this.client.connect()  
     }
 
-    getUsers = () =>{
+    getUsers = async() =>{
         try{
-           this.client.query(`SELECT * FROM users`)
-            .then((result)=>{
-                this.res.status(200).json(result.rows);
-            })
-            .catch((err)=>{
-                console.log(err);
-                this.res.status(500).json(err);
-            }) 
+            await this.client.query(`SELECT * FROM users`)
+            .then((res)=>{this.res.status(200).send(res.rows)})
+            .catch((err)=>{this.res.status(500).send(err)})
+            
         }
         catch(err: any){
             console.log(err);
@@ -31,13 +29,13 @@ export default class UsersControllers extends ConectDB{
         }
     }
 
-    getUser = (number: string) =>{
+    getUser = async(number: string) =>{
         this.number = number;
 
-        this.client.query(`SELECT Name FROM users WHERE Number = '${this.number}'`)
+        await this.client.query(`SELECT Name FROM users WHERE Number = '${this.number}'`)
             .then((result) => {
                 if (result.rowCount === 0) {
-                this.res.status(500).send("Usuario no encontrado");
+                this.res.status(404).send("Usuario no encontrado");
                 } else {
                 this.res.status(200).send("El usuario ya existe");
                 }
@@ -48,16 +46,18 @@ export default class UsersControllers extends ConectDB{
         });
     }
 
-    AddUser = (name: string, number: string, image: string) =>{
+    AddUser = async(name: string, number: string, image: string) =>{
         this.name = name;
         this.number = number;
         this.image = image;
 
-        this.client.query(`INSERT INTO users(ID, Name, Number, Image) VALUES(nextval('id_increment'), '${this.name}', '${this.number}', '${this.image}')`)
+        await this.client.query(`INSERT INTO users(ID, Name, Number, Image) VALUES(nextval('id_increment'), '${this.name}', '${this.number}', '${this.image}')`)
         .then(()=>{
             this.res.status(200).send("New User Added");
         })
         .catch((err)=>{
+            console.log(err);
+            
             this.res.status(500).send(err)
         })
     }

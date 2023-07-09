@@ -10,15 +10,20 @@ export default class ConectDB{
             host: DB_HOST,
             database: DB_NAME,
             password: DB_PASSWORD,
+            port: DB_PORT,
+            ssl: {
+                rejectUnauthorized: false,
+            }
         });
+       
     }
-    public isConnect = () =>{
-        this.client.end()
+    public isConnect = async() =>{
+        await this.client.connect()
         .then(()=>{
             console.log("Connected DB");
         })
-        .catch(()=>{
-            console.error("Error to closed conection");
+        .catch((err)=>{
+            console.error("Error to closed conection", err);
         })
     }
 }

@@ -1,10 +1,11 @@
+import { DB_HOST } from "../DB/credential";
 import UsersControllers from "../controllers/users.contollers";
 import { Router, Request, Response } from "express";
 
 const router = Router();
 
 router.route("/api/users")
-.get((req: Request, res: Response)=>{
+.get(async(req: Request, res: Response)=>{
     new UsersControllers(req, res).getUsers();
 })
 .post((req: Request, res: Response)=>{
@@ -15,8 +16,7 @@ router.route("/api/users")
 router.route("/api/user/:number")
 .get((req: Request, res: Response)=>{
     const {number} = req.params;
-    console.log(number);
-    
+
     new UsersControllers(req, res).getUser(number);
 })
 

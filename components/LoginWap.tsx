@@ -102,15 +102,24 @@ export default function LoginWap() {
     )
   }
 
-  const handleSubmit = () => {
-    setLogin(true);
-    axios.get(`${API_URL}server/api/user/${phoneNumber}`)
-    .then((res)=>{
-      setUserexist(true);
-      console.log(res);
-    })
-    .catch((err)=>console.log(err))
-    console.log(phoneNumber);
+  const handleSubmit = async() => {
+    console.log(`https://pokeapi.co/api/v2/pokemon`);
+    
+    fetch(`${API_URL}server/api/user/${phoneNumber}`)
+  .then((res) => {
+    if (!res.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return res.json();
+  })
+  .then((data) => {
+    console.log(data);
+    // Aquí puedes realizar las acciones necesarias con los datos obtenidos
+  })
+  .catch((error) => {
+    console.error(error);
+    // Aquí puedes manejar el error de acuerdo a tus necesidades
+  });
   };
 
   return (

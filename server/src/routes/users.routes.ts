@@ -12,4 +12,12 @@ router.route("/api/users")
     new UsersControllers(req, res).AddUser(name, number, image);
 })
 
+router.route("/api/user/:number")
+.get((req: Request, res: Response)=>{
+    const {number} = req.params;
+    console.log(number);
+    
+    new UsersControllers(req, res).getUser(number);
+})
+
 module.exports = router

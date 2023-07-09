@@ -3,10 +3,11 @@ import { ImageSourcePropType, StatusBar, StyleSheet, View } from 'react-native';
 import Home from './components/Home';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Messages from './components/Messages';
 import userimg from './assets/user.png'
 import nft from './assets/nft.png'
+import LoginWap from './components/LoginWap';
 
 const Stack = createStackNavigator();
 
@@ -43,13 +44,19 @@ const App = ()=>{
   }, [1]);
   console.log(users);
   return (
-    <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
         <StatusBar barStyle="dark-content" />
         <NavigationContainer>
           <Stack.Navigator screenOptions={{
             headerShown: false,
           }}>
+            <Stack.Screen options={{
+              headerStyle: {
+                backgroundColor: "#000",
+              },
+              cardStyle: { backgroundColor: 'black' }
+            }} name='Login' component={LoginWap} />
+
             <Stack.Screen options={{
               headerStyle: {
                 backgroundColor: "#000",
@@ -67,7 +74,6 @@ const App = ()=>{
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
-    </SafeAreaProvider>
   );
 }
 

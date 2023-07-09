@@ -8,9 +8,31 @@ class UsersControllers extends connect_1.default {
     constructor(req, res) {
         super();
         this.getUsers = () => {
-            this.client.query(`SELECT * FROM users`)
+            try {
+                this.client.query(`SELECT * FROM users`)
+                    .then((result) => {
+                    this.res.status(200).json(result.rows);
+                })
+                    .catch((err) => {
+                    console.log(err);
+                    this.res.status(500).json(err);
+                });
+            }
+            catch (err) {
+                console.log(err);
+                this.res.status(500).json(err);
+            }
+        };
+        this.getUser = (number) => {
+            this.number = number;
+            this.client.query(`SELECT Name FROM users WHERE Number = '${this.number}'`)
                 .then((result) => {
-                this.res.status(200).json(result.rows);
+                if (result.rowCount === 0) {
+                    this.res.status(500).send("Usuario no encontrado");
+                }
+                else {
+                    this.res.status(200).send("El usuario ya existe");
+                }
             })
                 .catch((err) => {
                 console.log(err);
@@ -21,7 +43,7 @@ class UsersControllers extends connect_1.default {
             this.name = name;
             this.number = number;
             this.image = image;
-            this.client.query(`INSERT INTO users(Name, Number, Image) VALUES('${this.name}', '${this.number}', '${this.image}')`)
+            this.client.query(`INSERT INTO users(ID, Name, Number, Image) VALUES(nextval('id_increment'), '${this.name}', '${this.number}', '${this.image}')`)
                 .then(() => {
                 this.res.status(200).send("New User Added");
             })

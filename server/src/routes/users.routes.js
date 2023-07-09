@@ -14,4 +14,10 @@ router.route("/api/users")
     const { name, number, image } = req.body;
     new users_contollers_1.default(req, res).AddUser(name, number, image);
 });
+router.route("/api/user/:number")
+    .get((req, res) => {
+    const { number } = req.params;
+    console.log(number);
+    new users_contollers_1.default(req, res).getUser(number);
+});
 module.exports = router;

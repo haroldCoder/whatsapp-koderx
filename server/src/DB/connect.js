@@ -27,10 +27,7 @@ class ConectDB {
             host: credential_1.DB_HOST,
             database: credential_1.DB_NAME,
             password: credential_1.DB_PASSWORD,
-            port: credential_1.DB_PORT,
-            ssl: {
-                rejectUnauthorized: false,
-            }
+            port: credential_1.DB_PORT
         });
     }
 }

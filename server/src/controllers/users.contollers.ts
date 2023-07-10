@@ -16,9 +16,10 @@ export default class UsersControllers extends ConectDB{
         this.client.connect()  
     }
 
-    getUsers = async() =>{
+    getUserByNumber = async(Number: string) =>{
+        this.number = Number;
         try{
-            await this.client.query(`SELECT * FROM users`)
+            await this.client.query(`SELECT * FROM users WHERE Number = '${this.number}'`)
             .then((res)=>{this.res.status(200).send(res.rows)})
             .catch((err)=>{this.res.status(500).send(err)})
             
@@ -51,7 +52,7 @@ export default class UsersControllers extends ConectDB{
         this.number = number;
         this.image = image;
 
-        await this.client.query(`INSERT INTO users(ID, Name, Number, Image) VALUES(nextval('id_increment'), '${this.name}', '${this.number}', '${this.image}')`)
+        await this.client.query(`INSERT INTO users(Name, Number, Image) VALUES('${this.name}', '${this.number}', '${this.image}')`)
         .then(()=>{
             this.res.status(200).send("New User Added");
         })
@@ -59,6 +60,38 @@ export default class UsersControllers extends ConectDB{
             console.log(err);
             
             this.res.status(500).send(err)
+        })
+    }
+
+    EditNameOfUser = async(Name: string, Number: string) =>{
+        this.name = Name;
+        this.number = Number;
+
+        await this.client.query(`UPDATE users SET Name = '${this.name}' WHERE Number = '${this.number}'`)
+        .then(()=>{
+            this.res.status(200).send("User Modify Name");
+        })
+        .catch((err)=>{
+            console.log(err);
+            
+            this.res.status(500).send(err) 
+        })
+    }
+
+    AddContact = async(id_user: number, id_add_user: number) =>{
+        await this.client.query(`INSERT INTO contacts(Id_main_user, Id_add_user) VALUES(${id_user}, ${id_add_user})`)
+        .then(()=>{
+            this.res.status(200).send("New Contact Added");
+        })
+        .catch((err)=>{
+            console.log(err);
+            if (err.code === "23505") {
+                this.res.status(400).send("the data contact exist");
+            } else if (err.code === "23514") {
+                this.res.status(400).send("you cant add yourselft");
+            } else {
+                this.res.status(500).json(err);
+            } 
         })
     }
 }

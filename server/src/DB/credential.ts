@@ -1,7 +1,6 @@
-export const DB_HOST = 'ep-lively-leaf-584032-pooler.us-east-1.postgres.vercel-storage.com'
-export const DB_USER = 'default'
-export const DB_PASSWORD = '5zrgipIemjq0'
-export const DB_NAME = 'verceldb'
+export const DB_HOST = 'bwh6blkptzgz1bm5wbv1-postgresql.services.clever-cloud.com'
+export const DB_USER = 'uhkr7xzqhiw3onqoifqg'
+export const DB_PASSWORD = 'tc8MC1eUTZDUH900NISmfE3ACpoGKT'
+export const DB_NAME = 'bwh6blkptzgz1bm5wbv1'
 export const DB_PORT = 5432
 export const PORT = process.env.PORT || 5000
-export const POSTGRES_URL="postgres://default:5zrgipIemjq0@ep-lively-leaf-584032-pooler.us-east-1.postgres.vercel-storage.com:5432/verceldb"

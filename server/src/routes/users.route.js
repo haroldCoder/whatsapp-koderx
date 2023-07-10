@@ -15,17 +15,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const users_contollers_1 = __importDefault(require("../controllers/users.contollers"));
 const express_1 = require("express");
 const router = (0, express_1.Router)();
-router.route("/api/users")
+router.route("/api/users/:number")
     .get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    new users_contollers_1.default(req, res).getUsers();
+    const { number } = req.params;
+    new users_contollers_1.default(req, res).getUserByNumber(number);
 }))
     .post((req, res) => {
     const { name, number, image } = req.body;
     new users_contollers_1.default(req, res).AddUser(name, number, image);
 });
+router.route("/api/users/contact")
+    .post((req, res) => {
+    const { user_main, user_add } = req.body;
+    new users_contollers_1.default(req, res).AddContact(user_main, user_add);
+});
 router.route("/api/user/:number")
     .get((req, res) => {
     const { number } = req.params;
     new users_contollers_1.default(req, res).getUser(number);
+})
+    .patch((req, res) => {
+    const { Name } = req.body;
+    const { Number } = req.params;
+    new users_contollers_1.default(req, res).EditNameOfUser(Name, Number);
 });
 module.exports = router;

@@ -1,5 +1,8 @@
 {
   "expo": {
+    "extra": {
+      "API_URL": "http://localhost:5000/"
+    },
     "experoments": {
       "tsconfigPaths": true
     },

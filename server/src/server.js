@@ -13,6 +13,7 @@ app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)());
 app.use("/server", (0, cors_1.default)(), require("./routes/users.route"));
+app.use("/server", (0, cors_1.default)(), require("./routes/messages.route"));
 app.listen(credential_1.PORT, () => {
     console.log(`Server on port ${credential_1.PORT}`);
     new connect_1.default().isConnect();

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ImageSourcePropType, StatusBar, StyleSheet, View } from 'react-native';
 import Home from './components/Home';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,6 +8,8 @@ import Messages from './components/Messages';
 import userimg from './assets/user.png'
 import nft from './assets/nft.png'
 import LoginWap from './components/LoginWap';
+import * as SecureStore from 'expo-secure-store';
+
 
 const Stack = createStackNavigator();
 
@@ -21,9 +23,11 @@ export interface User{
 const App = ()=>{
   const [users, setUsers] = useState<Array<User>>([]);
   const [user, setUser] = useState<User>({name: "", image: userimg, message: []});
+  const loggin = useRef<boolean>(false)
 
   useMemo(()=>{
     setUsers((us: User[])=>{
+      getisLogin();
       if(us)
         us.push({
           name: "Harold",
@@ -42,6 +46,17 @@ const App = ()=>{
       
       
   }, [1]);
+
+  useEffect(()=>{
+
+  })
+
+  const getisLogin = async() =>{
+    const log = await SecureStore.getItemAsync('isLogin');
+    if(log){
+      loggin.current = true
+    }
+  }
   console.log(users);
   return (
       <SafeAreaView style={styles.safeArea}>
@@ -50,12 +65,17 @@ const App = ()=>{
           <Stack.Navigator screenOptions={{
             headerShown: false,
           }}>
-            <Stack.Screen options={{
+            {
+              loggin.current ?
+              <Stack.Screen options={{
               headerStyle: {
                 backgroundColor: "#000",
               },
               cardStyle: { backgroundColor: 'black' }
             }} name='Login' component={LoginWap} />
+            : null
+            }
+            
 
             <Stack.Screen options={{
               headerStyle: {

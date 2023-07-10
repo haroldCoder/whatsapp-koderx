@@ -5,6 +5,8 @@ import menu from '../assets/menu.png';
 import axios from 'axios';
 import { API_URL } from '../config';
 import * as ImagePicker from 'expo-image-picker';
+import * as SecureStore from 'expo-secure-store';
+import { useNavigation } from '@react-navigation/native'
 
 export default function LoginWap() {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -13,6 +15,7 @@ export default function LoginWap() {
   const [name, setName] = useState<string>("");
 
   const [imageUri, setImageUri] = useState(null);
+  const navigation = useNavigation<any>();
 
   const handleImageUpload = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -61,6 +64,15 @@ export default function LoginWap() {
     setPhoneNumber(value);
   };
 
+  const LoginStart = () =>{
+    SecureStore.setItemAsync('phoneNumber', phoneNumber);
+    SecureStore.setItemAsync('isLogin', String(isLogin));
+    axios.patch(`${API_URL}server/api/user/${phoneNumber}`,{
+      "Name": name
+    })
+    navigation.navigate("Home")
+  }
+
   const UserAndImage = () =>{
     return(
       <View style={{padding: 25}}>
@@ -76,8 +88,8 @@ export default function LoginWap() {
               }}
               placeholder='....Paco'
               placeholderTextColor='#BBB'
-              value={name}
               onChangeText={(value)=>setName(value)}
+              value={name}
               keyboardType='phone-pad'
             />
         {
@@ -95,7 +107,7 @@ export default function LoginWap() {
           : null
         }
         
-      <Button style={{backgroundColor: "#222", padding: 5}} mode="contained" onPress={() => {}}>
+      <Button style={{backgroundColor: "#222", padding: 5}} mode="contained" onPress={LoginStart}>
         Save
       </Button>
       </View>
@@ -103,23 +115,17 @@ export default function LoginWap() {
   }
 
   const handleSubmit = async() => {
-    console.log(`https://pokeapi.co/api/v2/pokemon`);
-    
-    fetch(`${API_URL}server/api/user/${phoneNumber}`)
-  .then((res) => {
-    if (!res.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return res.json();
-  })
-  .then((data) => {
-    console.log(data);
-    // Aquí puedes realizar las acciones necesarias con los datos obtenidos
-  })
-  .catch((error) => {
-    console.error(error);
-    // Aquí puedes manejar el error de acuerdo a tus necesidades
-  });
+    await axios.get(`${API_URL}server/api/user/${phoneNumber}`)
+    .then((res)=>{
+      if(res.status == 200){
+        setUserexist(true)
+        setLogin(true)
+      }
+      else{
+        setLogin(true)
+      }
+    })
+    .catch((err)=>console.log(err))
   };
 
   return (

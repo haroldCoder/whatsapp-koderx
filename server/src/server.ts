@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use("/server", cors(), require("./routes/users.route"))
+app.use("/server", cors(), require("./routes/messages.route"))
+
 app.listen(PORT, ()=>{
     console.log(`Server on port ${PORT}`);
     new ConectDB().isConnect()

@@ -16,9 +16,10 @@ const connect_1 = __importDefault(require("../DB/connect"));
 class UsersControllers extends connect_1.default {
     constructor(req, res) {
         super();
-        this.getUsers = () => __awaiter(this, void 0, void 0, function* () {
+        this.getUserByNumber = (Number) => __awaiter(this, void 0, void 0, function* () {
+            this.number = Number;
             try {
-                yield this.client.query(`SELECT * FROM users`)
+                yield this.client.query(`SELECT * FROM users WHERE Number = '${this.number}'`)
                     .then((res) => { this.res.status(200).send(res.rows); })
                     .catch((err) => { this.res.status(500).send(err); });
             }
@@ -47,13 +48,43 @@ class UsersControllers extends connect_1.default {
             this.name = name;
             this.number = number;
             this.image = image;
-            yield this.client.query(`INSERT INTO users(ID, Name, Number, Image) VALUES(nextval('id_increment'), '${this.name}', '${this.number}', '${this.image}')`)
+            yield this.client.query(`INSERT INTO users(Name, Number, Image) VALUES('${this.name}', '${this.number}', '${this.image}')`)
                 .then(() => {
                 this.res.status(200).send("New User Added");
             })
                 .catch((err) => {
                 console.log(err);
                 this.res.status(500).send(err);
+            });
+        });
+        this.EditNameOfUser = (Name, Number) => __awaiter(this, void 0, void 0, function* () {
+            this.name = Name;
+            this.number = Number;
+            yield this.client.query(`UPDATE users SET Name = '${this.name}' WHERE Number = '${this.number}'`)
+                .then(() => {
+                this.res.status(200).send("User Modify Name");
+            })
+                .catch((err) => {
+                console.log(err);
+                this.res.status(500).send(err);
+            });
+        });
+        this.AddContact = (id_user, id_add_user) => __awaiter(this, void 0, void 0, function* () {
+            yield this.client.query(`INSERT INTO contacts(Id_main_user, Id_add_user) VALUES(${id_user}, ${id_add_user})`)
+                .then(() => {
+                this.res.status(200).send("New Contact Added");
+            })
+                .catch((err) => {
+                console.log(err);
+                if (err.code === "23505") {
+                    this.res.status(400).send("the data contact exist");
+                }
+                else if (err.code === "23514") {
+                    this.res.status(400).send("you cant add yourselft");
+                }
+                else {
+                    this.res.status(500).json(err);
+                }
             });
         });
         this.req = req;

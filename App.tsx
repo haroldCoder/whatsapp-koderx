@@ -9,6 +9,8 @@ import userimg from './assets/user.png'
 import nft from './assets/nft.png'
 import LoginWap from './components/LoginWap';
 import * as SecureStore from 'expo-secure-store';
+import { name } from '@cloudinary/base/actions/namedTransformation';
+import AddContact from './components/AddContact';
 
 
 const Stack = createStackNavigator();
@@ -91,6 +93,12 @@ const App = ()=>{
               },
               cardStyle: { backgroundColor: 'black' }
             }} name='msg' component={()=> <Messages name={user.name} image={user.image} message={user.message} />} /> 
+
+            <Stack.Screen options={{
+              headerStyle: {
+                backgroundColor: "#000",
+              },
+              cardStyle: { backgroundColor: 'black' }}} name="addContact" component={()=> <AddContact setUser={setUser} users={users} />} />
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
@@ -100,11 +108,11 @@ const App = ()=>{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "black"
   },
   safeArea: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
-    backgroundColor: "black"
+    paddingTop: StatusBar.currentHeight
   },
 });
 

@@ -36,8 +36,8 @@ export default function Messages({name, image, message} : User) {
       </View>
       <View style={{ flexDirection: 'row', position: "absolute", top: "90%", width: "100%", paddingHorizontal: 15, paddingBottom: 10 }}>
         <TextInput style={{backgroundColor: "#202c33", width: "80%", borderRadius: 100, color: "#FFF", padding: 12}} placeholder='Mensaje' />
-        <View style={{backgroundColor: "#38a589", borderRadius: 100, padding: 7, marginLeft: 5}}>
-          <Icon.Button name='paper-plane' style={{backgroundColor: "#38a589", width: 46, height: 46}}></Icon.Button>
+        <View style={{backgroundColor: "#333", borderRadius: 100, padding: 7, marginLeft: 5}}>
+          <Icon.Button name='paper-plane' style={{backgroundColor: "#333", width: 46, height: 46}}></Icon.Button>
         </View>
       </View>
     </View>

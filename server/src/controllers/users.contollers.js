@@ -100,6 +100,20 @@ class UsersControllers extends connect_1.default {
                 }
             });
         });
+        this.ViewContacts = (number) => {
+            this.number = number;
+            this.getIdUserByNumber(this.number)
+                .then((res) => __awaiter(this, void 0, void 0, function* () {
+                yield this.client.query(`SELECT users.Name, users.Image, users.Number FROM contacts JOIN users ON contacts.Id_add_user = users.ID WHERE contacts.Id_main_user = ${res.id}`)
+                    .then((res) => {
+                    this.res.status(200).json(res);
+                })
+                    .catch((err) => {
+                    console.log(err);
+                    this.res.status(500).send(err);
+                });
+            }));
+        };
         this.req = req;
         this.res = res;
         this.client.connect();

@@ -109,4 +109,20 @@ export default class UsersControllers extends ConectDB{
             } 
         })
     }
+
+    ViewContacts = (number: string) =>{
+        this.number = number;
+        this.getIdUserByNumber(this.number)
+        .then(async(res: any)=>{
+            await this.client.query(`SELECT users.Name, users.Image, users.Number FROM contacts JOIN users ON contacts.Id_add_user = users.ID WHERE contacts.Id_main_user = ${res.id}`)
+            .then((res)=>{
+                this.res.status(200).json(res)
+            })
+            .catch((err)=>{
+                console.log(err);
+                
+                this.res.status(500).send(err) 
+            })
+        })
+    }
 }

@@ -11,6 +11,13 @@ router.route("/api/users/contact")
     new UsersControllers(req, res).AddContact(user_main, user_add);
 })
 
+router.route("/api/users/contact/:number")
+.get((req: Request, res: Response)=>{
+    const {number} = req.params;
+
+    new UsersControllers(req, res).ViewContacts(number);
+})
+
 router.route("/api/users/:number")
 .get(async(req: Request, res: Response)=>{
     const {number} = req.params

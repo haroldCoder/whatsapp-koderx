@@ -21,6 +21,11 @@ router.route("/api/users/contact")
     console.log(user_main);
     new users_contollers_1.default(req, res).AddContact(user_main, user_add);
 });
+router.route("/api/users/contact/:number")
+    .get((req, res) => {
+    const { number } = req.params;
+    new users_contollers_1.default(req, res).ViewContacts(number);
+});
 router.route("/api/users/:number")
     .get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { number } = req.params;

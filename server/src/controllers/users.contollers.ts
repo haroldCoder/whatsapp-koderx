@@ -30,6 +30,21 @@ export default class UsersControllers extends ConectDB{
         }
     }
 
+    getIdUserByNumber = async(Number: string) =>{
+        this.number = Number;
+
+        try{
+            await this.client.query(`SELECT ID FROM users WHERE Number = '${this.number}'`)
+            .then((res)=>{
+                this.res.status(200).send(res.rows[0]);
+            })
+            .catch((err)=>{this.res.status(500).send(err)})
+        }
+        catch(err: any){
+            this.res.status(500).json(err)
+        }
+    }
+
     getUser = async(number: string) =>{
         this.number = number;
 

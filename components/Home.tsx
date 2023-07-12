@@ -24,7 +24,7 @@ export default function Home({setUser, users}: propHome) {
             <Contacts setuser={setUser} name={e.name} image={e.image} message={e.message} />
           ))
         }
-        <View style={{ flexDirection: 'row', position: "absolute", top: "90%", width: "100%", justifyContent: "flex-end", paddingRight: 10}}>
+        <View style={{ flexDirection: 'row', position: "absolute", top: "85%", width: "100%", justifyContent: "flex-end", paddingRight: 10}}>
           <TouchableOpacity onPress={()=>{
             
             navigation.navigate("addContact")

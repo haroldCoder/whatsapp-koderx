@@ -28,6 +28,19 @@ class UsersControllers extends connect_1.default {
                 this.res.status(500).json(err);
             }
         });
+        this.getIdUserByNumber = (Number) => __awaiter(this, void 0, void 0, function* () {
+            this.number = Number;
+            try {
+                yield this.client.query(`SELECT ID FROM users WHERE Number = '${this.number}'`)
+                    .then((res) => {
+                    this.res.status(200).send(res.rows[0]);
+                })
+                    .catch((err) => { this.res.status(500).send(err); });
+            }
+            catch (err) {
+                this.res.status(500).json(err);
+            }
+        });
         this.getUser = (number) => __awaiter(this, void 0, void 0, function* () {
             this.number = number;
             yield this.client.query(`SELECT Name FROM users WHERE Number = '${this.number}'`)

@@ -1,10 +1,12 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react'
 import {View, Text, TouchableHighlight, Alert} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { User } from '../App'
 import Contacts from './Contacts'
 import { useNavigation } from '@react-navigation/native'
 import { Button } from 'react-native-paper'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import AddNumber from './AddNumber'
 
 interface propaddcontact{
     setUser: Dispatch<SetStateAction<User>>,
@@ -13,6 +15,7 @@ interface propaddcontact{
 
 export default function AddContact({setUser, users} : propaddcontact) {
     const navigation = useNavigation<any>();
+    const [isAddNumber, setIsAddNumber] = useState<boolean>(false);
 
   return (
     <View style={{flex: 1}}>
@@ -26,10 +29,14 @@ export default function AddContact({setUser, users} : propaddcontact) {
           </View>
         </View>
         <View style={{flex: 1, padding: 8}}>
+          <TouchableOpacity onPress={()=>{
+            setIsAddNumber(true)
+          }}>
             <View style={{flexDirection: "row", padding: 5, alignItems: "center", marginBottom: 25}}>
                 <Icon style={{backgroundColor: "#222", color: "#FFF", width: 60, height: 60, borderRadius: 100, padding: 10, fontSize: 40}} name='person-add' />
                 <Text style={{color: "#FFF", fontSize: 22, marginLeft: 15}}>New contact</Text>
             </View>
+          </TouchableOpacity>
             <Text style={{color: "#FFF", margin: 10, marginBottom: 26}}>Contact whatsApp</Text>
             {
                 users?.map((e: any)=>(
@@ -37,6 +44,10 @@ export default function AddContact({setUser, users} : propaddcontact) {
                 ))
             }
         </View>
+        {
+          isAddNumber ?
+          <AddNumber /> : null
+        }
     </View>
   )
 }

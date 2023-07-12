@@ -25,12 +25,12 @@ export interface User{
 const App = ()=>{
   const [users, setUsers] = useState<Array<User>>([]);
   const [user, setUser] = useState<User>({name: "", image: userimg, message: []});
-  const loggin = useRef<boolean>(false)
+  const [loggin, setLoggin] = useState<boolean>(true)
 
   useMemo(()=>{
+    
     setUsers((us: User[])=>{
-      getisLogin();
-      if(us)
+      if(us.length < 1){
         us.push({
           name: "Harold",
           image: userimg,
@@ -43,6 +43,7 @@ const App = ()=>{
           "image": nft,
           "message": ["Ey Harold que tal!", "Parcero me puedes ayudar a terminar un trabajo?"]
         })
+      }
         return us;
       })
       
@@ -50,25 +51,26 @@ const App = ()=>{
   }, [1]);
 
   useEffect(()=>{
-
-  })
+    getisLogin();
+  }, [])
 
   const getisLogin = async() =>{
     const log = await SecureStore.getItemAsync('isLogin');
-    if(log){
-      loggin.current = true
+    if(log && log != null && SecureStore.getItemAsync('phoneNumber') != null){
+      setLoggin(true)
+      
     }
+    console.log(loggin);
   }
-  console.log(users);
   return (
       <SafeAreaView style={styles.safeArea}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar />
         <NavigationContainer>
           <Stack.Navigator screenOptions={{
             headerShown: false,
           }}>
             {
-              loggin.current ?
+              !loggin ?
               <Stack.Screen options={{
               headerStyle: {
                 backgroundColor: "#000",
@@ -108,11 +110,10 @@ const App = ()=>{
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black"
+    backgroundColor: "#FFF"
   },
   safeArea: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight
   },
 });
 

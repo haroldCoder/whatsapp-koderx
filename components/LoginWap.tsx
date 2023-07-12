@@ -78,6 +78,7 @@ export default function LoginWap() {
       <View style={{padding: 25}}>
         <Text style={{color: "#FFF", fontSize: 17}}>Name</Text>
         <TextInput
+              key="uniqueKey"
               style={{
                 borderBottomColor: '#FFF',
                 borderBottomWidth: 1,
@@ -90,7 +91,8 @@ export default function LoginWap() {
               placeholderTextColor='#BBB'
               onChangeText={(value)=>setName(value)}
               value={name}
-              keyboardType='phone-pad'
+              keyboardType='default'
+              
             />
         {
           !userexist ?

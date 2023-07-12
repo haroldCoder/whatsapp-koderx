@@ -16,6 +16,8 @@ router.route("/api/users/:number")
 router.route("/api/users/contact")
 .post((req: Request, res: Response)=>{
     const {user_main, user_add} = req.body;
+    console.log(user_main);
+    
     new UsersControllers(req, res).AddContact(user_main, user_add);
 })
 
@@ -31,6 +33,13 @@ router.route("/api/user/:number")
     const {Number} = req.params;
 
     new UsersControllers(req, res).EditNameOfUser(Name, Number);
+})
+
+router.route("/api/userid/:number")
+.get((req: Request, res: Response)=>{
+    const {number} = req.params;
+
+    new UsersControllers(req, res).getIdUserByNumber(number);
 })
 
 module.exports = router

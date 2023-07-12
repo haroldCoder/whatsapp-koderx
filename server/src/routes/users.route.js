@@ -27,6 +27,7 @@ router.route("/api/users/:number")
 router.route("/api/users/contact")
     .post((req, res) => {
     const { user_main, user_add } = req.body;
+    console.log(user_main);
     new users_contollers_1.default(req, res).AddContact(user_main, user_add);
 });
 router.route("/api/user/:number")
@@ -38,5 +39,10 @@ router.route("/api/user/:number")
     const { Name } = req.body;
     const { Number } = req.params;
     new users_contollers_1.default(req, res).EditNameOfUser(Name, Number);
+});
+router.route("/api/userid/:number")
+    .get((req, res) => {
+    const { number } = req.params;
+    new users_contollers_1.default(req, res).getIdUserByNumber(number);
 });
 module.exports = router;

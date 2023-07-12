@@ -3,6 +3,14 @@ import { Router, Request, Response } from "express";
 
 const router = Router();
 
+router.route("/api/users/contact")
+.post((req: Request, res: Response)=>{
+    const {user_main, user_add} = req.body;
+    console.log(user_main);
+    
+    new UsersControllers(req, res).AddContact(user_main, user_add);
+})
+
 router.route("/api/users/:number")
 .get(async(req: Request, res: Response)=>{
     const {number} = req.params
@@ -11,14 +19,6 @@ router.route("/api/users/:number")
 .post((req: Request, res: Response)=>{
     const {name, number, image} = req.body;
     new UsersControllers(req, res).AddUser(name, number, image);
-})
-
-router.route("/api/users/contact")
-.post((req: Request, res: Response)=>{
-    const {user_main, user_add} = req.body;
-    console.log(user_main);
-    
-    new UsersControllers(req, res).AddContact(user_main, user_add);
 })
 
 router.route("/api/user/:number")

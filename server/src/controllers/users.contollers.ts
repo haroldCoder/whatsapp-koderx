@@ -30,18 +30,20 @@ export default class UsersControllers extends ConectDB{
         }
     }
 
-    getIdUserByNumber = async(Number: string) =>{
+    getIdUserByNumber = async(Number: string, search: boolean = false) =>{
         this.number = Number;
 
-        try{
-            await this.client.query(`SELECT ID FROM users WHERE Number = '${this.number}'`)
-            .then((res)=>{
-                this.res.status(200).send(res.rows[0]);
-            })
-            .catch((err)=>{this.res.status(500).send(err)})
-        }
-        catch(err: any){
-            this.res.status(500).json(err)
+        try {
+            const result = await this.client.query(`SELECT ID FROM users WHERE Number = '${this.number}'`);
+            if(!search){
+                this.res.status(200).send(result.rows[0]);  
+            }
+            else{
+               return result.rows[0]; 
+            }
+        } catch (err: any) {
+            this.res.status(500).send(err);
+            throw err;
         }
     }
 
@@ -112,11 +114,12 @@ export default class UsersControllers extends ConectDB{
 
     ViewContacts = (number: string) =>{
         this.number = number;
-        this.getIdUserByNumber(this.number)
+        this.getIdUserByNumber(this.number, true)
         .then(async(res: any)=>{
+            
             await this.client.query(`SELECT users.Name, users.Image, users.Number FROM contacts JOIN users ON contacts.Id_add_user = users.ID WHERE contacts.Id_main_user = ${res.id}`)
             .then((res)=>{
-                this.res.status(200).json(res)
+                this.res.status(200).json(res.rows)
             })
             .catch((err)=>{
                 console.log(err);

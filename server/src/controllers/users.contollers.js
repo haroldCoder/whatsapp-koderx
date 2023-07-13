@@ -28,17 +28,20 @@ class UsersControllers extends connect_1.default {
                 this.res.status(500).json(err);
             }
         });
-        this.getIdUserByNumber = (Number) => __awaiter(this, void 0, void 0, function* () {
+        this.getIdUserByNumber = (Number, search = false) => __awaiter(this, void 0, void 0, function* () {
             this.number = Number;
             try {
-                yield this.client.query(`SELECT ID FROM users WHERE Number = '${this.number}'`)
-                    .then((res) => {
-                    this.res.status(200).send(res.rows[0]);
-                })
-                    .catch((err) => { this.res.status(500).send(err); });
+                const result = yield this.client.query(`SELECT ID FROM users WHERE Number = '${this.number}'`);
+                if (!search) {
+                    this.res.status(200).send(result.rows[0]);
+                }
+                else {
+                    return result.rows[0];
+                }
             }
             catch (err) {
-                this.res.status(500).json(err);
+                this.res.status(500).send(err);
+                throw err;
             }
         });
         this.getUser = (number) => __awaiter(this, void 0, void 0, function* () {
@@ -102,11 +105,11 @@ class UsersControllers extends connect_1.default {
         });
         this.ViewContacts = (number) => {
             this.number = number;
-            this.getIdUserByNumber(this.number)
+            this.getIdUserByNumber(this.number, true)
                 .then((res) => __awaiter(this, void 0, void 0, function* () {
                 yield this.client.query(`SELECT users.Name, users.Image, users.Number FROM contacts JOIN users ON contacts.Id_add_user = users.ID WHERE contacts.Id_main_user = ${res.id}`)
                     .then((res) => {
-                    this.res.status(200).json(res);
+                    this.res.status(200).json(res.rows);
                 })
                     .catch((err) => {
                     console.log(err);

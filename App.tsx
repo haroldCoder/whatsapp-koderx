@@ -30,21 +30,8 @@ const App = ()=>{
   const [loggin, setLoggin] = useState<boolean>(true)
 
   const getUsers = async() =>{
-    const res : Array<User> = (await axios.get(`${API_URL}server/api/users/contact/${await SecureStore.getItemAsync('phoneNumber')}`)).data;
-
-    res.map((e: User, index: number)=>{
-      setUsers((use: User[])=>{
-        use[index] = {
-          name: e.name,
-          image: e.image,
-          number: e.number,
-          message: e.message == undefined ? ["Ahora pueden hablar"] : e.message
-        }
-        return use;
-    })
-    })
-    
-    console.log(res[0].message);
+    console.log(`${API_URL}server/api/users/contact/${await SecureStore.getItemAsync('phoneNumber')}`);
+  
     
   }
 

@@ -7,7 +7,7 @@ import { User } from '../App';
 interface propContact{
   setuser: Dispatch<SetStateAction<User>>
   name: string,
-  image: ImageSourcePropType,
+  image: string | any,
   message: string[]
 }
 
@@ -15,9 +15,9 @@ export default function Contacts({setuser, name, image, message}: propContact) {
   const navigation = useNavigation<any>();
 
   return (
-    <View style={{display: "flex", flexDirection: "row", alignItems: "center", marginBottom: 16}}>
+    <View style={{flexDirection: "row", alignItems: "center", marginBottom: 16}}>
         <View style={{marginRight: 6}}>
-            <Image source={image} style={{width: 60, height: 60, borderRadius: 100}} />
+            <Image source={{uri: image}} style={{width: 50, height: 50, borderRadius: 100}} />
         </View>
         <TouchableOpacity onPress={()=>{
           setuser({

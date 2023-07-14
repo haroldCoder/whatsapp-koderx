@@ -11,13 +11,15 @@ import LoginWap from './components/LoginWap';
 import * as SecureStore from 'expo-secure-store';
 import { name } from '@cloudinary/base/actions/namedTransformation';
 import AddContact from './components/AddContact';
+import axios from 'axios';
+import { API_URL } from './config';
 
 
 const Stack = createStackNavigator();
 
 export interface User{
   name: string,
-  image: ImageSourcePropType,
+  image: string | any,
   number?: string,
   message: string[]
 }
@@ -27,31 +29,29 @@ const App = ()=>{
   const [user, setUser] = useState<User>({name: "", image: userimg, message: []});
   const [loggin, setLoggin] = useState<boolean>(true)
 
-  useMemo(()=>{
-    
-    setUsers((us: User[])=>{
-      if(us.length < 1){
-        us.push({
-          name: "Harold",
-          image: userimg,
-          number: "3006397804",
-          message: ["Last msg"],
-        });
+  const getUsers = async() =>{
+    const res : Array<User> = (await axios.get(`${API_URL}server/api/users/contact/${await SecureStore.getItemAsync('phoneNumber')}`)).data;
 
-        us.push({
-          "name": "Luis",
-          "image": nft,
-          "message": ["Ey Harold que tal!", "Parcero me puedes ayudar a terminar un trabajo?"]
-        })
-      }
-        return us;
-      })
-      
-      
-  }, [1]);
+    res.map((e: User, index: number)=>{
+      setUsers((use: User[])=>{
+        use[index] = {
+          name: e.name,
+          image: e.image,
+          number: e.number,
+          message: e.message == undefined ? ["Ahora pueden hablar"] : e.message
+        }
+        return use;
+    })
+    })
+    
+    console.log(res[0].message);
+    
+  }
+
 
   useEffect(()=>{
     getisLogin();
+    getUsers();
   }, [])
 
   const getisLogin = async() =>{

@@ -96,7 +96,7 @@ export default class UsersControllers extends ConectDB{
     }
 
     AddContact = async(id_user: number, id_add_user: number) =>{
-        await this.client.query(`INSERT INTO contacts(Id_main_user, Id_add_user) VALUES(${id_user}, ${id_add_user})`)
+        await this.client.query(`INSERT INTO contacts(Id_user_main, Id_user_add) VALUES(${id_user}, ${id_add_user})`)
         .then(()=>{
             this.res.status(200).send("New Contact Added");
         })

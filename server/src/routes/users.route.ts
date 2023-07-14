@@ -6,7 +6,6 @@ const router = Router();
 router.route("/api/users/contact")
 .post((req: Request, res: Response)=>{
     const {user_main, user_add} = req.body;
-    console.log(user_main);
     
     new UsersControllers(req, res).AddContact(user_main, user_add);
 })

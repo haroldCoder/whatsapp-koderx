@@ -23,6 +23,8 @@ router.route("/api/users/:number")
     const {number} = req.params
     new UsersControllers(req, res).getUserByNumber(number);
 })
+
+router.route("/api/users")
 .post((req: Request, res: Response)=>{
     const {name, number, image} = req.body;
     new UsersControllers(req, res).AddUser(name, number, image);

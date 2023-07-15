@@ -19,7 +19,11 @@ class MessagesController extends ConectDB{
         this.user_em = user_em;
         this.user_tr = user_tr;
 
-        this.client.query(`SELECT content FROM messages JOIN users ON messages.Id_em = users.ID WHERE messages.Id_tr = ${this.user_em} OR messages.Id_em = ${this.user_em}`)
+        this.client.query(`SELECT content 
+        FROM messages 
+        JOIN users ON messages.Id_em = users.ID 
+        WHERE (messages.Id_tr = ${this.user_em} OR messages.Id_em = ${this.user_em}) 
+          AND (messages.Id_tr = ${this.user_tr} OR messages.Id_em = ${this.user_tr})`)
         .then((res)=>{
             this.res.status(200).json(res.rows);
         })

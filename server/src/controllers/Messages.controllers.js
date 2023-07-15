@@ -14,10 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const connect_1 = __importDefault(require("../DB/connect"));
 class MessagesController extends connect_1.default {
-    constructor(req, res, Id_contact) {
+    constructor(req, res) {
         super();
-        this.ViewMessages = () => __awaiter(this, void 0, void 0, function* () {
-            this.client.query(`SELECT content FROM messages JOIN contacts ON messages.Id_contact = contacts.ID`)
+        this.ViewMessages = (user_em, user_tr) => __awaiter(this, void 0, void 0, function* () {
+            this.user_em = user_em;
+            this.user_tr = user_tr;
+            this.client.query(`SELECT content FROM messages JOIN users ON messages.user_em = users.ID WHERE messages.user_tr = ${this.user_tr} AND messages.user_em = ${this.user_em}`)
                 .then((res) => {
                 this.res.status(200).json(res.rows);
             })
@@ -26,8 +28,10 @@ class MessagesController extends connect_1.default {
                 this.res.status(500).send(err);
             });
         });
-        this.SendMessage = (content) => __awaiter(this, void 0, void 0, function* () {
-            this.client.query(`INSERT INTO messages(content, Id_contact) VALUES('${content}', ${this.Id_contact})`)
+        this.SendMessage = (content, user_em, user_tr) => __awaiter(this, void 0, void 0, function* () {
+            this.user_em = user_em;
+            this.user_tr = user_tr;
+            this.client.query(`INSERT INTO messages(content, Id_em, Id_tr) VALUES('${content}', ${this.user_em}, ${this.user_tr})`)
                 .then(() => {
                 this.res.status(200);
             })
@@ -38,7 +42,6 @@ class MessagesController extends connect_1.default {
         });
         this.req = req;
         this.res = res;
-        this.Id_contact = Id_contact;
         this.client.connect();
     }
 }

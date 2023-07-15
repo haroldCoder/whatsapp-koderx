@@ -18,7 +18,6 @@ const router = (0, express_1.Router)();
 router.route("/api/users/contact")
     .post((req, res) => {
     const { user_main, user_add } = req.body;
-    console.log(user_main);
     new users_contollers_1.default(req, res).AddContact(user_main, user_add);
 });
 router.route("/api/users/contact/:number")
@@ -30,7 +29,8 @@ router.route("/api/users/:number")
     .get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { number } = req.params;
     new users_contollers_1.default(req, res).getUserByNumber(number);
-}))
+}));
+router.route("/api/users")
     .post((req, res) => {
     const { name, number, image } = req.body;
     new users_contollers_1.default(req, res).AddUser(name, number, image);

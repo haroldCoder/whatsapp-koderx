@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { StyleSheet, View, } from 'react-native'
 import Contacts from './Contacts'
-import { User } from '../App'
+import {User} from '../App'
 import Head from './Head';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -9,7 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 interface propHome{
   setUser: Dispatch<SetStateAction<User>>,
-  users: User[]
+  users: User[],
 }
 
 export default function Home({setUser, users}: propHome) {
@@ -21,7 +21,7 @@ export default function Home({setUser, users}: propHome) {
       <View style={styles.mainHome}>
         {
           users?.map((e)=>(
-            <Contacts setuser={setUser} name={e.name} image={e.image} message={e.message} />
+            <Contacts setuser={setUser} name={e.name} user_em={e.id_user_main} user_tr={e.id_user_add} image={e.image} />
           ))
         }
         <View style={{ flexDirection: 'row', position: "absolute", top: "85%", width: "100%", justifyContent: "flex-end", paddingRight: 10}}>

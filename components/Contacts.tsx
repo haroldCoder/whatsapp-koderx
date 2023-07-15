@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { ImageSourcePropType, TouchableOpacity, View } from 'react-native'
 import { Image, Text } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
@@ -8,11 +8,25 @@ interface propContact{
   setuser: Dispatch<SetStateAction<User>>
   name: string,
   image: string | any,
-  message: string[]
+  user_tr?: number,
+  user_em?: number
 }
 
-export default function Contacts({setuser, name, image, message}: propContact) {
+interface Message{
+  content: string
+}
+
+export default function Contacts({setuser, name, image, user_tr, user_em}: propContact) {
   const navigation = useNavigation<any>();
+  const [messages, setMessages] = useState<Message[]>([]);
+
+  useEffect(()=>{
+    getMessages()
+  })
+
+  const getMessages = () =>{
+
+  }
 
   return (
     <View style={{flexDirection: "row", alignItems: "center", marginBottom: 16}}>
@@ -23,13 +37,12 @@ export default function Contacts({setuser, name, image, message}: propContact) {
           setuser({
             name: name,
             image: image,
-            message: message
           })
           navigation.navigate("msg");
         }}>
             <View>
                 <Text style={{color: "#FFF", fontSize: 18}}>{name}</Text>
-                <Text style={{color: "#999", marginTop: 5, fontSize: 16}}>{message[message.length-1]}</Text>
+                <Text style={{color: "#999", marginTop: 5, fontSize: 16}}>{messages[messages.length-1].content}</Text>
             </View>
         </TouchableOpacity>
     </View>

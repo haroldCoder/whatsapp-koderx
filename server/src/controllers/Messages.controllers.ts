@@ -4,18 +4,22 @@ import { Request, Response } from "express";
 class MessagesController extends ConectDB{
     public req: Request;
     public res: Response;
-    public Id_contact: number;
+    public user_tr?: number;
+    public user_em?: number
 
-    constructor(req: Request, res: Response, Id_contact: number){
+    constructor(req: Request, res: Response){
         super();
         this.req = req;
         this.res = res;
-        this.Id_contact = Id_contact;
         this.client.connect();
     }
 
-    ViewMessages = async() =>{
-        this.client.query(`SELECT content FROM messages JOIN contacts ON messages.Id_contact = contacts.ID`)
+    ViewMessages = async(user_em: number, user_tr: number) =>{
+
+        this.user_em = user_em;
+        this.user_tr = user_tr;
+
+        this.client.query(`SELECT content FROM messages JOIN users ON messages.user_em = users.ID WHERE messages.user_tr = ${this.user_tr} AND messages.user_em = ${this.user_em}`)
         .then((res)=>{
             this.res.status(200).json(res.rows);
         })
@@ -26,8 +30,11 @@ class MessagesController extends ConectDB{
         })
     }
 
-    SendMessage = async(content: string) =>{
-        this.client.query(`INSERT INTO messages(content, Id_contact) VALUES('${content}', ${this.Id_contact})`)
+    SendMessage = async(content: string, user_em: number, user_tr: number) =>{
+        this.user_em = user_em;
+        this.user_tr = user_tr;
+
+        this.client.query(`INSERT INTO messages(content, Id_em, Id_tr) VALUES('${content}', ${this.user_em}, ${this.user_tr})`)
         .then(()=>{
             this.res.status(200)
         })

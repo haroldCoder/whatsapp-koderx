@@ -21,17 +21,30 @@ export interface User{
   name: string,
   image: string | any,
   number?: string,
-  message: string[]
+  id_user_main?: number,
+  id_user_add?: number
 }
 
 const App = ()=>{
   const [users, setUsers] = useState<Array<User>>([]);
-  const [user, setUser] = useState<User>({name: "", image: userimg, message: []});
+  const [user, setUser] = useState<User>({name: "", image: userimg});
   const [loggin, setLoggin] = useState<boolean>(true)
 
   const getUsers = async() =>{
-    console.log(`${API_URL}server/api/users/contact/${await SecureStore.getItemAsync('phoneNumber')}`);
-  
+    const res : Array<User> = (await axios.get(`${API_URL}server/api/users/contact/${await SecureStore.getItemAsync('phoneNumber')}`)).data;
+    
+    res.map((e: User, index: number)=>{
+      setUsers((use: User[])=>{
+        use[index] = {
+          name: e.name,
+          image: e.image,
+          number: e.number,
+        }
+        return use;
+    })
+    })
+    
+    console.log(res);
     
   }
 
@@ -73,7 +86,7 @@ const App = ()=>{
                 backgroundColor: "#000",
               },
               cardStyle: { backgroundColor: 'black' }
-            }} name="Home" component={()=> <Home setUser={setUser} users={users}/> } />
+            }} name="Home" component={()=> <Home setUser={setUser} users={users} />} />
             
             
             <Stack.Screen options={{
@@ -81,7 +94,7 @@ const App = ()=>{
                 backgroundColor: "#000",
               },
               cardStyle: { backgroundColor: 'black' }
-            }} name='msg' component={()=> <Messages name={user.name} image={user.image} message={user.message} />} /> 
+            }} name='msg' component={()=> <Messages name={user.name} image={user.image} />} /> 
 
             <Stack.Screen options={{
               headerStyle: {

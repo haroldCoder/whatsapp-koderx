@@ -6,14 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const Messages_controllers_1 = __importDefault(require("../controllers/Messages.controllers"));
 const router = (0, express_1.Router)();
-router.route("/api/messages/:id_contact")
+router.route("/api/messages/:user_em/:user_tr")
     .get((req, res) => {
-    const { id_contact } = req.params;
-    new Messages_controllers_1.default(req, res, id_contact).ViewMessages();
+    const { user_em, user_tr } = req.params;
+    new Messages_controllers_1.default(req, res).ViewMessages(user_em, user_tr);
 });
 router.route("/api/message")
     .post((req, res) => {
-    const { id_contact, content } = req.body;
-    new Messages_controllers_1.default(req, res, id_contact).SendMessage(content);
+    const { user_em, user_tr, content } = req.body;
+    new Messages_controllers_1.default(req, res).SendMessage(content, user_em, user_tr);
 });
 module.exports = router;

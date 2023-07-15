@@ -86,7 +86,7 @@ class UsersControllers extends connect_1.default {
             });
         });
         this.AddContact = (id_user, id_add_user) => __awaiter(this, void 0, void 0, function* () {
-            yield this.client.query(`INSERT INTO contacts(Id_main_user, Id_add_user) VALUES(${id_user}, ${id_add_user})`)
+            yield this.client.query(`INSERT INTO contacts(Id_user_main, Id_user_add) VALUES(${id_user}, ${id_add_user})`)
                 .then(() => {
                 this.res.status(200).send("New Contact Added");
             })
@@ -107,7 +107,7 @@ class UsersControllers extends connect_1.default {
             this.number = number;
             this.getIdUserByNumber(this.number, true)
                 .then((res) => __awaiter(this, void 0, void 0, function* () {
-                yield this.client.query(`SELECT users.Name, users.Image, users.Number FROM contacts JOIN users ON contacts.Id_add_user = users.ID WHERE contacts.Id_main_user = ${res.id}`)
+                yield this.client.query(`SELECT users.Name, users.Image, users.Number, contacts.Id_user_main, contacts.Id_user_add FROM contacts JOIN users ON contacts.Id_user_add = users.ID WHERE contacts.Id_user_main = ${res.id}`)
                     .then((res) => {
                     this.res.status(200).json(res.rows);
                 })

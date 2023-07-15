@@ -16,4 +16,9 @@ router.route("/api/message")
     const { user_em, user_tr, content } = req.body;
     new Messages_controllers_1.default(req, res).SendMessage(content, user_em, user_tr);
 });
+router.route("/api/messages/:number")
+    .get((req, res) => {
+    const { number } = req.params;
+    new Messages_controllers_1.default(req, res).ViewMessagesByNumber(number);
+});
 module.exports = router;

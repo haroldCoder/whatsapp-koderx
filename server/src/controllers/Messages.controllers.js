@@ -19,7 +19,8 @@ class MessagesController extends connect_1.default {
         this.ViewMessages = (user_em, user_tr) => __awaiter(this, void 0, void 0, function* () {
             this.user_em = user_em;
             this.user_tr = user_tr;
-            this.client.query(`SELECT content FROM messages JOIN users ON messages.user_em = users.ID WHERE messages.user_tr = ${this.user_tr} AND messages.user_em = ${this.user_em}`)
+            console.log(user_em);
+            this.client.query(`SELECT content FROM messages JOIN users ON messages.Id_em = users.ID WHERE messages.Id_tr = ${this.user_em} OR messages.Id_em = ${this.user_em}`)
                 .then((res) => {
                 this.res.status(200).json(res.rows);
             })

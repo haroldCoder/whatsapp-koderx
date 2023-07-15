@@ -29,7 +29,7 @@ export default function Contacts({setuser, name, image, user_tr, user_em}: propC
   const getMessages = async() =>{
     const res = (await axios.get(`${API_URL}server/api/messages/${user_em}/${user_tr}`)).data
     setMessages(res)
-    
+    console.log("3"+name);
     
   }
 

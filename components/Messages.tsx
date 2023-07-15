@@ -30,7 +30,7 @@ export default function Messages({name, image, message} : Message) {
         {
           message.map((ms: any)=>(
             <View style={{backgroundColor: "#202c33", borderRadius: 10, padding: 12, alignSelf: "flex-start", marginBottom: 12}}>
-              <Text style={{color: "#FFF"}}>{ms.contenttr5}</Text>
+              <Text style={{color: "#FFF"}}>{ms.content}</Text>
             </View>
           ))
         }

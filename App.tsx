@@ -5,11 +5,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaView } from "react-native-safe-area-context";
 import Messages from './components/Messages';
-import userimg from './assets/user.png'
-import nft from './assets/nft.png'
 import LoginWap from './components/LoginWap';
 import * as SecureStore from 'expo-secure-store';
-import { name } from '@cloudinary/base/actions/namedTransformation';
 import AddContact from './components/AddContact';
 import axios from 'axios';
 import { API_URL } from './config';
@@ -22,7 +19,9 @@ export interface User{
   image: string | any,
   number?: string,
   id_user_main?: number,
-  id_user_add?: number
+  id_user_add?: number,
+  id_em?: number,
+  id_tr?: number
 }
 
 export interface Message{
@@ -94,7 +93,7 @@ const App = ()=>{
                 backgroundColor: "#000",
               },
               cardStyle: { backgroundColor: 'black' }
-            }} name="Home" component={()=> <Home setUser={setUser} users={users} />} />
+            }} name="Home" component={()=> <Home setUser={setUser} />} />
             
             
             <Stack.Screen options={{

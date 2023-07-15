@@ -1,5 +1,6 @@
 import ConectDB from "../DB/connect";
 import { Request, Response } from "express";
+import UsersControllers from "./users.contollers";
 
 class MessagesController extends ConectDB{
     public req: Request;
@@ -47,6 +48,22 @@ class MessagesController extends ConectDB{
             
             this.res.status(500).send(err);
         })
+    }
+
+    ViewMessagesByNumber = async(number: string) =>{
+        var us = new UsersControllers(this.req, this.res).getIdUserByNumber(number, true).then((res: any)=>{
+            this.client.query(`SELECT messages.Id_em, messages.Id_tr, users.Name, users.Number, users.Image From messages JOIN users ON messages.Id_em = users.ID WHERE messages.Id_tr = ${res.id} OR messages.Id_em = ${res.id}`)
+            .then((res)=>{
+                this.res.status(200).json(res.rows);
+            })
+            .catch((err)=>{
+                console.log(err);
+                
+                this.res.status(500).send(err);
+            })
+        })
+
+        
     }
 }
 

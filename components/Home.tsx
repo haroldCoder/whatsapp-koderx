@@ -1,14 +1,14 @@
 import React, { Dispatch, SetStateAction } from 'react'
 import { StyleSheet, View, } from 'react-native'
 import Contacts from './Contacts'
-import {User} from '../App'
+import {User, Message} from '../App'
 import Head from './Head';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 
 interface propHome{
-  setUser: Dispatch<SetStateAction<User>>,
+  setUser: Dispatch<SetStateAction<Message>>,
   users: User[],
 }
 

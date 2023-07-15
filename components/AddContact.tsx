@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react'
 import {View, Text, TouchableHighlight, Alert} from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
-import { User } from '../App'
+import { Message, User } from '../App'
 import Contacts from './Contacts'
 import { useNavigation } from '@react-navigation/native'
 import { Button } from 'react-native-paper'
@@ -9,7 +9,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler'
 import AddNumber from './AddNumber'
 
 interface propaddcontact{
-    setUser: Dispatch<SetStateAction<User>>,
+    setUser: Dispatch<SetStateAction<Message>>,
     users: User[]
   }
 
@@ -40,7 +40,7 @@ export default function AddContact({setUser, users} : propaddcontact) {
             <Text style={{color: "#FFF", margin: 10, marginBottom: 26}}>Contact whatsApp</Text>
             {
                 users?.map((e: any)=>(
-                    <Contacts setuser={setUser} name={e.name} image={e.image} message={e.message} />
+                    <Contacts setuser={setUser} name={e.name} image={e.image} user_em={e.id_user_main} user_tr={e.id_user_add} />
                 ))
             }
         </View>

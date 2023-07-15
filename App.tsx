@@ -25,9 +25,15 @@ export interface User{
   id_user_add?: number
 }
 
+export interface Message{
+  name: string,
+  image: string,
+  message: any
+}
+
 const App = ()=>{
   const [users, setUsers] = useState<Array<User>>([]);
-  const [user, setUser] = useState<User>({name: "", image: userimg});
+  const [user, setUser] = useState<Message>({name: "", image: "", message: []});
   const [loggin, setLoggin] = useState<boolean>(true)
 
   const getUsers = async() =>{
@@ -39,6 +45,8 @@ const App = ()=>{
           name: e.name,
           image: e.image,
           number: e.number,
+          id_user_main: e.id_user_main,
+          id_user_add: e.id_user_add
         }
         return use;
     })
@@ -94,7 +102,7 @@ const App = ()=>{
                 backgroundColor: "#000",
               },
               cardStyle: { backgroundColor: 'black' }
-            }} name='msg' component={()=> <Messages name={user.name} image={user.image} />} /> 
+            }} name='msg' component={()=> <Messages name={user.name} image={user.image} message={user.message} />} /> 
 
             <Stack.Screen options={{
               headerStyle: {

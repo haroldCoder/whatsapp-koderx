@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const connect_1 = __importDefault(require("../DB/connect"));
+const users_contollers_1 = __importDefault(require("./users.contollers"));
 class MessagesController extends connect_1.default {
     constructor(req, res) {
         super();
@@ -42,6 +43,18 @@ class MessagesController extends connect_1.default {
                 .catch((err) => {
                 console.log(err);
                 this.res.status(500).send(err);
+            });
+        });
+        this.ViewMessagesByNumber = (number) => __awaiter(this, void 0, void 0, function* () {
+            var us = new users_contollers_1.default(this.req, this.res).getIdUserByNumber(number, true).then((res) => {
+                this.client.query(`SELECT messages.Id_em, messages.Id_tr, users.Name, users.Number, users.Image From messages JOIN users ON messages.Id_em = users.ID WHERE messages.Id_tr = ${res.id} OR messages.Id_em = ${res.id}`)
+                    .then((res) => {
+                    this.res.status(200).json(res.rows);
+                })
+                    .catch((err) => {
+                    console.log(err);
+                    this.res.status(500).send(err);
+                });
             });
         });
         this.req = req;

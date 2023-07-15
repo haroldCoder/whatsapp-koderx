@@ -1,14 +1,15 @@
 import React from 'react'
 import { View, Image, Text, TextInput } from 'react-native'
-import { User } from '../App'
+import { Message } from '../App'
 import Icon from "react-native-vector-icons/FontAwesome";
 import { GestureHandlerRootView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native'
 
-export default function Messages({name, image, message} : User) {
+export default function Messages({name, image, message} : Message) {
 
   const navigation = useNavigation<any>();
-
+  console.log(message);
+  
   return (
     <GestureHandlerRootView style={{flex: 1}}>
     <View style={{flex: 1}}>
@@ -21,15 +22,15 @@ export default function Messages({name, image, message} : User) {
               <Icon.Button name="arrow-left" style={{color: "#FFF", backgroundColor: "#222"}}></Icon.Button>
             </View>
           </TouchableOpacity>
-          <Image source={image} style={{width: 50, height: 50, borderRadius: 100}} />
+          <Image source={{uri: image}} style={{width: 50, height: 50, borderRadius: 100}} />
           <Text style={{marginLeft: 7, color: "white", fontSize: 20}}>{name}</Text>
         </View>
       </View>
       <View style={{padding: 8}}>
         {
-          message.map((ms)=>(
+          message.map((ms: any)=>(
             <View style={{backgroundColor: "#202c33", borderRadius: 10, padding: 12, alignSelf: "flex-start", marginBottom: 12}}>
-              <Text style={{color: "#FFF"}}>{ms}</Text>
+              <Text style={{color: "#FFF"}}>{ms.contenttr5}</Text>
             </View>
           ))
         }

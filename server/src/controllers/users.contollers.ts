@@ -120,7 +120,7 @@ export default class UsersControllers extends ConectDB{
         this.getIdUserByNumber(this.number, true)
         .then(async(res: any)=>{
             
-            await this.client.query(`SELECT users.Name, users.Image, users.Number, contacts.Id_user_main, contacts.Id_user_add FROM contacts JOIN users ON contacts.Id_user_add = users.ID WHERE contacts.Id_user_main = ${res.id}`)
+            await this.client.query(`SELECT users.Name, users.Image, users.Number, contacts.Id_user_main, contacts.Id_user_add FROM contacts JOIN users ON contacts.Id_user_add = users.ID WHERE contacts.Id_user_main = ${res}`)
             .then((res)=>{
                 this.res.status(200).json(res.rows)
             })

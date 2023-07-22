@@ -110,7 +110,7 @@ class UsersControllers extends connect_1.default {
             this.number = number;
             this.getIdUserByNumber(this.number, true)
                 .then((res) => __awaiter(this, void 0, void 0, function* () {
-                yield this.client.query(`SELECT users.Name, users.Image, users.Number, contacts.Id_user_main, contacts.Id_user_add FROM contacts JOIN users ON contacts.Id_user_add = users.ID WHERE contacts.Id_user_main = ${res.id}`)
+                yield this.client.query(`SELECT users.Name, users.Image, users.Number, contacts.Id_user_main, contacts.Id_user_add FROM contacts JOIN users ON contacts.Id_user_add = users.ID WHERE contacts.Id_user_main = ${res}`)
                     .then((res) => {
                     this.res.status(200).json(res.rows);
                 })

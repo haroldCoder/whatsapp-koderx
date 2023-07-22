@@ -29,14 +29,17 @@ class UsersControllers extends connect_1.default {
             }
         });
         this.getIdUserByNumber = (Number, search = false) => __awaiter(this, void 0, void 0, function* () {
+            var _a;
             this.number = Number;
             try {
-                const result = yield this.client.query(`SELECT ID FROM users WHERE Number = '${this.number}'`);
+                const result = yield this.client.query(`SELECT ID AS id FROM users WHERE Number = '${this.number}'`);
                 if (!search) {
                     this.res.status(200).send(result.rows[0]);
                 }
                 else {
-                    return result.rows[0];
+                    const id = (_a = result.rows[0]) === null || _a === void 0 ? void 0 : _a.id;
+                    console.log(result.rows, this.number);
+                    return id;
                 }
             }
             catch (err) {

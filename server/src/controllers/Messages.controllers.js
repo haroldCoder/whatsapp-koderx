@@ -34,8 +34,8 @@ class MessagesController extends connect_1.default {
             });
         });
         this.SendMessage = (content, user_em, user_tr) => __awaiter(this, void 0, void 0, function* () {
-            this.user_em = user_em;
-            this.user_tr = user_tr;
+            this.user_em = yield new users_contollers_1.default(this.req, this.res).getIdUserByNumber(user_em, true);
+            this.user_tr = yield new users_contollers_1.default(this.req, this.res).getIdUserByNumber(user_tr, true);
             this.client.query(`INSERT INTO messages(content, Id_em, Id_tr) VALUES('${content}', ${this.user_em}, ${this.user_tr})`)
                 .then(() => {
                 this.res.status(200);

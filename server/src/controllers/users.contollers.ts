@@ -34,12 +34,15 @@ export default class UsersControllers extends ConectDB{
         this.number = Number;
 
         try {
-            const result = await this.client.query(`SELECT ID FROM users WHERE Number = '${this.number}'`);
+            const result = await this.client.query(`SELECT ID AS id FROM users WHERE Number = '${this.number}'`);
             if(!search){
                 this.res.status(200).send(result.rows[0]);  
             }
             else{
-               return result.rows[0]; 
+                const id = result.rows[0]?.id;
+                console.log(result.rows, this.number);
+                
+               return id; 
             }
         } catch (err: any) {
             this.res.status(500).send(err);

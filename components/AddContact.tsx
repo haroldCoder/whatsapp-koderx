@@ -46,7 +46,7 @@ export default function AddContact({setUser, users} : propaddcontact) {
         </View>
         {
           isAddNumber ?
-          <AddNumber /> : null
+          <AddNumber setAddNumber={setIsAddNumber} /> : null
         }
     </View>
   )

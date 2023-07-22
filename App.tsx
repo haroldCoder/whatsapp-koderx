@@ -49,10 +49,7 @@ const App = ()=>{
         }
         return use;
     })
-    })
-    
-    console.log(res);
-    
+    })    
   }
 
 
@@ -67,7 +64,6 @@ const App = ()=>{
       setLoggin(true)
       
     }
-    console.log(loggin);
   }
   return (
       <SafeAreaView style={styles.safeArea}>

@@ -40,8 +40,6 @@ export default class UsersControllers extends ConectDB{
             }
             else{
                 const id = result.rows[0]?.id;
-                console.log(result.rows, this.number);
-                
                return id; 
             }
         } catch (err: any) {

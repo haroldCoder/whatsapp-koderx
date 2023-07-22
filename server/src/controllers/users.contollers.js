@@ -38,7 +38,6 @@ class UsersControllers extends connect_1.default {
                 }
                 else {
                     const id = (_a = result.rows[0]) === null || _a === void 0 ? void 0 : _a.id;
-                    console.log(result.rows, this.number);
                     return id;
                 }
             }

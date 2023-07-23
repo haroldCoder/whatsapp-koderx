@@ -34,7 +34,7 @@ export interface Message{
 const App = ()=>{
   const [users, setUsers] = useState<Array<User>>([]);
   const [user, setUser] = useState<Message>({name: "", image: "", message: [], number: ""});
-  const [loggin, setLoggin] = useState<boolean>(true)
+  const [loggin, setLoggin] = useState<boolean>(false)
 
   const getUsers = async() =>{
     const res : Array<User> = (await axios.get(`${API_URL}server/api/users/contact/${await SecureStore.getItemAsync('phoneNumber')}`)).data;
@@ -55,8 +55,8 @@ const App = ()=>{
 
 
   useEffect(()=>{
-    getisLogin();
     const timer = setTimeout(()=>{
+      getisLogin();
       getUsers();
     }, 1500)
     return ()=>clearInterval(timer)
@@ -66,8 +66,9 @@ const App = ()=>{
     const log = await SecureStore.getItemAsync('isLogin');
     if(log && log != null && SecureStore.getItemAsync('phoneNumber') != null){
       setLoggin(true)
-      
     }
+    console.log(log);
+    console.log(loggin);
   }
   return (
       <SafeAreaView style={styles.safeArea}>

@@ -1,19 +1,70 @@
-import React, { ChangeEvent, useState } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native';
 import { Button } from 'react-native-paper';
-import menu from '../assets/menu.png';
 import axios from 'axios';
 import { API_URL } from '../config';
 import * as ImagePicker from 'expo-image-picker';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from '@react-navigation/native'
+import AddNumber from './AddNumber';
+
+interface propsUserAndImage{
+  userexist: boolean,
+  handleImageUpload: () => Promise<void>,
+  imageUri: any,
+  LoginStart: () => void,
+  name: string,
+  setName: Dispatch<SetStateAction<string>>
+}
+
+const UserAndImage = ({userexist, handleImageUpload, imageUri, LoginStart, name, setName} : propsUserAndImage) =>{
+  
+
+  return(
+    <View style={{padding: 25}}>
+      <Text style={{color: "#FFF", fontSize: 17}}>Name</Text>
+      <TextInput
+            style={{
+              borderBottomColor: '#FFF',
+              borderBottomWidth: 1,
+              color: '#FFF',
+              height: 40,
+              fontSize: 18,
+              marginBottom: 16,
+            }}
+ 
+            placeholderTextColor='#BBB'
+            value={name}
+            onChange={(value : NativeSyntheticEvent<TextInputChangeEventData>)=>{setName(value.nativeEvent.text);
+            }} 
+          />
+      {
+        !userexist ?
+        <TouchableOpacity
+        style={styles.imageContainer}
+        onPress={handleImageUpload}
+        >
+          {imageUri ? (
+            <Image source={{ uri: imageUri }} style={styles.image} />
+          ) : (
+            <Text style={styles.placeholderText}>Select an Image</Text>
+          )}
+        </TouchableOpacity>
+        : null
+      }
+      
+    <Button style={{backgroundColor: "#222", padding: 5}} mode="contained" onPress={LoginStart}>
+      Save
+    </Button>
+    </View>
+  )
+}
 
 export default function LoginWap() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isLogin, setLogin] = useState<boolean>(false);
   const [userexist, setUserexist] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
-
   const [imageUri, setImageUri] = useState(null);
   const navigation = useNavigation<any>();
 
@@ -64,6 +115,7 @@ export default function LoginWap() {
     setPhoneNumber(value);
   };
 
+
   const LoginStart = () =>{
     SecureStore.setItemAsync('phoneNumber', phoneNumber);
     SecureStore.setItemAsync('isLogin', String(isLogin));
@@ -71,49 +123,6 @@ export default function LoginWap() {
       "Name": name
     })
     navigation.navigate("Home")
-  }
-
-  const UserAndImage = () =>{
-    return(
-      <View style={{padding: 25}}>
-        <Text style={{color: "#FFF", fontSize: 17}}>Name</Text>
-        <TextInput
-              key="uniqueKey"
-              style={{
-                borderBottomColor: '#FFF',
-                borderBottomWidth: 1,
-                color: '#FFF',
-                height: 40,
-                fontSize: 18,
-                marginBottom: 16,
-              }}
-              placeholder='....Paco'
-              placeholderTextColor='#BBB'
-              onChangeText={(value)=>setName(value)}
-              value={name}
-              keyboardType='default'
-              
-            />
-        {
-          !userexist ?
-          <TouchableOpacity
-          style={styles.imageContainer}
-          onPress={handleImageUpload}
-          >
-            {imageUri ? (
-              <Image source={{ uri: imageUri }} style={styles.image} />
-            ) : (
-              <Text style={styles.placeholderText}>Select an Image</Text>
-            )}
-          </TouchableOpacity>
-          : null
-        }
-        
-      <Button style={{backgroundColor: "#222", padding: 5}} mode="contained" onPress={LoginStart}>
-        Save
-      </Button>
-      </View>
-    )
   }
 
   const handleSubmit = async() => {
@@ -194,7 +203,7 @@ export default function LoginWap() {
           </View>
         
       </>
-      : <UserAndImage />
+      : <UserAndImage userexist={userexist} handleImageUpload={handleImageUpload} imageUri={imageUri} LoginStart={LoginStart} name={name} setName={setName} />
       }
     </View>
   );

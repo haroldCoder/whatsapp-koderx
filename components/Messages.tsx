@@ -8,7 +8,7 @@ import axios from 'axios';
 import { API_URL } from '../config';
 import * as SecureStore from 'expo-secure-store';
 
-export default function Messages({name, image, message} : Message) {
+export default function Messages({name, image, message, number} : Message) {
   const navigation = useNavigation<any>();
   const [text, setText] = useState<string>("");
   
@@ -41,7 +41,11 @@ export default function Messages({name, image, message} : Message) {
         <TextInput onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>)=>{setText(event.nativeEvent.text)}} style={{backgroundColor: "#202c33", width: "80%", borderRadius: 100, color: "#FFF", padding: 12}} placeholder='Mensaje' />
         <View style={{backgroundColor: "#333", borderRadius: 100, padding: 7, marginLeft: 5}}>
           <Icon.Button onPress={async()=>{
-            axios.post(`${API_URL}server/api/messages/${await SecureStore.getItemAsync('phoneNumber')}`)
+            axios.post(`${API_URL}server/api/message`,{
+              user_em: await SecureStore.getItemAsync('phoneNumber'),
+              user_tr: number,
+              content: text
+            })
           }} name='paper-plane' style={{backgroundColor: "#333", width: 46, height: 46}}></Icon.Button>
         </View>
       </View>

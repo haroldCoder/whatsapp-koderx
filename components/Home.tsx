@@ -43,8 +43,8 @@ export default function Home({setUser}: propHome) {
       <Head />
       <View style={styles.mainHome}>
         {
-          users?.map((e)=>(
-            <Contacts key={e.number} setuser={setUser} name={e.name} user_em={e.id_user_main} user_tr={e.id_user_add} image={e.image} />
+          users.map((e:User)=>(
+            <Contacts key={e.number} setuser={setUser} number={e.number} name={e.name} user_em={e.id_user_main} user_tr={e.id_user_add} image={e.image} />
           ))
         }
         <View style={{ flexDirection: 'row', position: "absolute", top: "85%", width: "100%", justifyContent: "flex-end", paddingRight: 10}}>

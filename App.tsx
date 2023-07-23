@@ -17,7 +17,7 @@ const Stack = createStackNavigator();
 export interface User{
   name: string,
   image: string | any,
-  number?: string,
+  number: string,
   id_user_main?: number,
   id_user_add?: number,
   id_em?: number,
@@ -27,12 +27,13 @@ export interface User{
 export interface Message{
   name: string,
   image: string,
-  message: any
+  message: any,
+  number: string
 }
 
 const App = ()=>{
   const [users, setUsers] = useState<Array<User>>([]);
-  const [user, setUser] = useState<Message>({name: "", image: "", message: []});
+  const [user, setUser] = useState<Message>({name: "", image: "", message: [], number: ""});
   const [loggin, setLoggin] = useState<boolean>(true)
 
   const getUsers = async() =>{
@@ -55,7 +56,10 @@ const App = ()=>{
 
   useEffect(()=>{
     getisLogin();
-    getUsers();
+    const timer = setTimeout(()=>{
+      getUsers();
+    }, 1500)
+    return ()=>clearInterval(timer)
   }, [])
 
   const getisLogin = async() =>{
@@ -97,7 +101,7 @@ const App = ()=>{
                 backgroundColor: "#000",
               },
               cardStyle: { backgroundColor: 'black' }
-            }} name='msg' component={()=> <Messages name={user.name} image={user.image} message={user.message} />} /> 
+            }} name='msg' component={()=> <Messages name={user.name} image={user.image} message={user.message} number={user.number} />} /> 
 
             <Stack.Screen options={{
               headerStyle: {

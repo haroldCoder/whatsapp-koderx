@@ -11,19 +11,24 @@ interface propContact{
   name: string,
   image: string | any,
   user_tr?: number,
-  user_em?: number
+  user_em?: number,
+  number: string
 }
 
 interface Messages{
   content: string
 }
 
-export default function Contacts({setuser, name, image, user_tr, user_em}: propContact) {
+export default function Contacts({setuser, name, image, user_tr, user_em, number}: propContact) {
   const navigation = useNavigation<any>();
   const [messages, setMessages] = useState<Messages[]>([]);
 
   useEffect(()=>{
+    const timer = setTimeout(()=>{
     getMessages()
+    }, 1500);
+
+    return ()=>clearInterval(timer);
   }, [])
 
   const getMessages = async() =>{
@@ -40,7 +45,8 @@ export default function Contacts({setuser, name, image, user_tr, user_em}: propC
           setuser({
             name: name,
             image: image,
-            message: messages
+            message: messages,
+            number: number
           })
           navigation.navigate("msg");
         }}>

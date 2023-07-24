@@ -18,3 +18,4 @@ app.listen(credential_1.PORT, () => {
     console.log(`Server on port ${credential_1.PORT}`);
     new connect_1.default().isConnect();
 });
+module.exports = app;

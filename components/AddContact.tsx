@@ -39,8 +39,8 @@ export default function AddContact({setUser, users} : propaddcontact) {
           </TouchableOpacity>
             <Text style={{color: "#FFF", margin: 10, marginBottom: 26}}>Contact whatsApp</Text>
             {
-                users?.map((e: any)=>(
-                    <Contacts setuser={setUser} name={e.name} image={e.image} user_em={e.id_user_main} user_tr={e.id_user_add} />
+                users?.map((e: User)=>(
+                    <Contacts setuser={setUser} name={e.name} image={e.image} user_em={e.id_user_main} number={e.number} user_tr={e.id_user_add} />
                 ))
             }
         </View>

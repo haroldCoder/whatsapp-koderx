@@ -17,3 +17,5 @@ app.listen(PORT, ()=>{
     console.log(`Server on port ${PORT}`);
     new ConectDB().isConnect()
 });
+
+module.exports = app;

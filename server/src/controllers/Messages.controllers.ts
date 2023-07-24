@@ -41,7 +41,6 @@ class MessagesController extends ConectDB{
         
             const newArray = queryResult.rows.map((row: any) => ({
               number_em: number_1,
-              number_tr: number_2,
               content: row.content,
             }));
         

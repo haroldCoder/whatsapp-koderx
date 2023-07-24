@@ -8,21 +8,35 @@ import axios from 'axios';
 import { API_URL } from '../config';
 import * as SecureStore from 'expo-secure-store';
 
+interface message{
+  content: string,
+  number_em: string
+}
+
+
 export default function Messages({name, image, id_em, id_tr, number} : Message) {
   const navigation = useNavigation<any>();
   const [text, setText] = useState<string>("");
-  const [message, setMessages] = useState<any[]>([])
+  const [Number, setNumber] = useState<string | any>("")
+  const [message, setMessage] = useState<message[]>([])
 
   useEffect(()=>{
     const timer = setInterval(()=>{
     const getMessages = async() =>{
-      const res = (await axios.get(`${API_URL}server/api/messages/${id_em}/${id_tr}`)).data
-      setMessages(res)
+      const res : message[] = (await axios.get(`${API_URL}server/api/messages/${id_em}/${id_tr}`)).data
+      setMessage(res)
     }
     getMessages();
     }, 1000);
     return ()=>clearInterval(timer);
   }, [])
+
+  useEffect(()=>{
+    const getNumberSecureStore = async() =>{
+      setNumber(await SecureStore.getItemAsync('phoneNumber'))
+    }
+    getNumberSecureStore()
+  })
   
   return (
     <GestureHandlerRootView style={{flex: 1}}>
@@ -42,8 +56,8 @@ export default function Messages({name, image, id_em, id_tr, number} : Message) 
       </View>
       <View style={{padding: 8}}>
         {
-          message.map((ms: any)=>(
-            <View style={{backgroundColor: "#202c33", borderRadius: 10, padding: 12, alignSelf: "flex-start", marginBottom: 12}}>
+          message.map((ms: message)=>(
+            <View style={{backgroundColor: `${ms.number_em == number ? "#28A" : "#333"}`, borderRadius: 10, padding: 12, alignSelf: "flex-start", marginBottom: 12}}>
               <Text style={{color: "#FFF"}}>{ms.content}</Text>
             </View>
           ))

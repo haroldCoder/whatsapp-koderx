@@ -38,8 +38,7 @@ class MessagesController extends connect_1.default {
                 const number_2 = userTrQueryResult.rows.length > 0 ? userTrQueryResult.rows[0].number : null;
                 const newArray = queryResult.rows.map((row) => ({
                     number_em: number_1,
-                    number_tr: number_2,
-                    content: [...row.content],
+                    content: row.content,
                 }));
                 this.res.status(200).json(newArray);
             }

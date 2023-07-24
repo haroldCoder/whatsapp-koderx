@@ -32,7 +32,7 @@ const UserAndImage = ({userexist, handleImageUpload, imageUri, LoginStart, name,
               fontSize: 18,
               marginBottom: 16,
             }}
- 
+            placeholder='...Paco'
             placeholderTextColor='#BBB'
             value={name}
             onChange={(value : NativeSyntheticEvent<TextInputChangeEventData>)=>{setName(value.nativeEvent.text);

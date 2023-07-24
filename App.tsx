@@ -28,7 +28,9 @@ export interface Message{
   name: string,
   image: string,
   message: any,
-  number: string
+  number: string,
+  id_em?: number,
+  id_tr?: number
 }
 
 const App = ()=>{
@@ -102,7 +104,7 @@ const App = ()=>{
                 backgroundColor: "#000",
               },
               cardStyle: { backgroundColor: 'black' }
-            }} name='msg' component={()=> <Messages name={user.name} image={user.image} message={user.message} number={user.number} />} /> 
+            }} name='msg' component={()=> <Messages name={user.name} id_tr={user.id_tr} id_em={user.id_em} image={user.image} message={user.message} number={user.number} />} /> 
 
             <Stack.Screen options={{
               headerStyle: {

@@ -41,7 +41,7 @@ class MessagesController extends ConectDB{
 
         this.client.query(`INSERT INTO messages(content, Id_em, Id_tr) VALUES('${content}', ${this.user_em}, ${this.user_tr})`)
         .then(()=>{
-            this.res.status(200)
+            this.res.status(200).send("ok")
         })
         .catch((err)=>{
             console.log(err);

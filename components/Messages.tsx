@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Image, Text, TextInput, NativeSyntheticEvent, TextInputChangeEventData } from 'react-native'
 import { Message } from '../App'
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -8,9 +8,21 @@ import axios from 'axios';
 import { API_URL } from '../config';
 import * as SecureStore from 'expo-secure-store';
 
-export default function Messages({name, image, message, number} : Message) {
+export default function Messages({name, image, id_em, id_tr, number} : Message) {
   const navigation = useNavigation<any>();
   const [text, setText] = useState<string>("");
+  const [message, setMessages] = useState<any[]>([])
+
+  useEffect(()=>{
+    const timer = setInterval(()=>{
+    const getMessages = async() =>{
+      const res = (await axios.get(`${API_URL}server/api/messages/${id_em}/${id_tr}`)).data
+      setMessages(res)
+    }
+    getMessages();
+    }, 1000);
+    return ()=>clearInterval(timer);
+  }, [])
   
   return (
     <GestureHandlerRootView style={{flex: 1}}>
@@ -38,14 +50,16 @@ export default function Messages({name, image, message, number} : Message) {
         }
       </View>
       <View style={{ flexDirection: 'row', position: "absolute", top: "90%", width: "100%", paddingHorizontal: 15, paddingBottom: 10 }}>
-        <TextInput onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>)=>{setText(event.nativeEvent.text)}} style={{backgroundColor: "#202c33", width: "80%", borderRadius: 100, color: "#FFF", padding: 12}} placeholder='Mensaje' />
+        <TextInput value={text} onChange={(event: NativeSyntheticEvent<TextInputChangeEventData>)=>{setText(event.nativeEvent.text)}} style={{backgroundColor: "#202c33", width: "80%", borderRadius: 100, color: "#FFF", padding: 12}} placeholder='Mensaje' />
         <View style={{backgroundColor: "#333", borderRadius: 100, padding: 7, marginLeft: 5}}>
           <Icon.Button onPress={async()=>{
-            axios.post(`${API_URL}server/api/message`,{
+            setText("");
+            await axios.post(`${API_URL}server/api/message`,{
               user_em: await SecureStore.getItemAsync('phoneNumber'),
               user_tr: number,
               content: text
             })
+            
           }} name='paper-plane' style={{backgroundColor: "#333", width: 46, height: 46}}></Icon.Button>
         </View>
       </View>

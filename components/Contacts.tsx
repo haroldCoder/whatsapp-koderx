@@ -24,17 +24,17 @@ export default function Contacts({setuser, name, image, user_tr, user_em, number
   const [messages, setMessages] = useState<Messages[]>([]);
 
   useEffect(()=>{
-    const timer = setTimeout(()=>{
-    getMessages()
-    }, 1500);
-
+    const timer = setInterval(()=>{
+    const getMessages = async() =>{
+      const res = (await axios.get(`${API_URL}server/api/messages/${user_em}/${user_tr}`)).data
+      setMessages(res)
+    }
+    getMessages();
+    }, 1000);
     return ()=>clearInterval(timer);
   }, [])
 
-  const getMessages = async() =>{
-    const res = (await axios.get(`${API_URL}server/api/messages/${user_em}/${user_tr}`)).data
-    setMessages(res)
-  }
+  
 
   return (
     <View style={{flexDirection: "row", alignItems: "center", marginBottom: 16}}>
@@ -46,7 +46,9 @@ export default function Contacts({setuser, name, image, user_tr, user_em, number
             name: name,
             image: image,
             message: messages,
-            number: number
+            number: number,
+            id_tr: user_tr,
+            id_em: user_em
           })
           navigation.navigate("msg");
         }}>

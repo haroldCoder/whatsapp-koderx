@@ -3,7 +3,7 @@ import { ImageSourcePropType, StatusBar, StyleSheet, View } from 'react-native';
 import Home from './components/Home';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import Messages from './components/Messages';
 import LoginWap from './components/LoginWap';
 import * as SecureStore from 'expo-secure-store';
@@ -73,6 +73,7 @@ const App = ()=>{
     console.log(loggin);
   }
   return (
+    <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
         <StatusBar />
         <NavigationContainer>
@@ -114,6 +115,7 @@ const App = ()=>{
           </Stack.Navigator>
         </NavigationContainer>
       </SafeAreaView>
+      </SafeAreaProvider>
   );
 }
 

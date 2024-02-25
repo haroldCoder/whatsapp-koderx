@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx nodemon",
+    "dev": "tsc & npx nodemon",
     "test": "cross-env NODE_ENV=test jest --verbose"
   },
   "keywords": [],

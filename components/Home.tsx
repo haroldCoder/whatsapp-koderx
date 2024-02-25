@@ -20,10 +20,12 @@ export default function Home({setUser}: propHome) {
 
   useEffect(() => {
     const getMessageMe = async () => {
-      const res: Array<User> = await (
+      try{
+        const res: Array<User> = await (
         await axios.get(`${API_URL}server/api/messages/${await SecureStore.getItemAsync('phoneNumber')}`)
       ).data;
-
+        console.log(res);
+        
       const updatedUsers = res.map((e: User) => ({
         name: e.name,
         image: e.image,
@@ -33,7 +35,13 @@ export default function Home({setUser}: propHome) {
       }));
 
       setUsers(updatedUsers);
-    };
+    }
+    catch(err){
+      console.log(err);
+      
+    }
+      }
+      
 
     getMessageMe();
   }, []);

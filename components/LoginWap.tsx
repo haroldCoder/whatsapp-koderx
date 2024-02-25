@@ -126,17 +126,21 @@ export default function LoginWap() {
   }
 
   const handleSubmit = async() => {
-    await axios.get(`${API_URL}server/api/user/${phoneNumber}`)
-    .then((res)=>{
-      if(res.status == 200){
-        setUserexist(true)
-        setLogin(true)
+    try {
+      const response = await fetch(`${API_URL}server/api/user/${phoneNumber}`);
+      if (response.status === 200) {
+        setUserexist(true);
+        setLogin(true);
+        const data = await response.json();
+        console.log(data);
+      } else {
+        setLogin(true);
+        
       }
-      else{
-        setLogin(true)
-      }
-    })
-    .catch((err)=>console.log(err))
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   };
 
   return (

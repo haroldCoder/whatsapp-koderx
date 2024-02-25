@@ -9,9 +9,9 @@ const cors_1 = __importDefault(require("cors"));
 const credential_1 = require("./DB/credential");
 const connect_1 = __importDefault(require("./DB/connect"));
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
-app.use((0, cors_1.default)());
 app.use("/server", (0, cors_1.default)(), require("./routes/users.route"));
 app.use("/server", (0, cors_1.default)(), require("./routes/messages.route"));
 app.listen(credential_1.PORT, () => {

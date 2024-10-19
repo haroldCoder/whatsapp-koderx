@@ -68,18 +68,16 @@ class MessagesController extends ConectDB{
 
     ViewMessagesByNumber = async(number: string) =>{
         var us = new UsersControllers(this.req, this.res).getIdUserByNumber(number, true).then((res: any)=>{
+            console.log(res);
+            
             this.client.query(`SELECT MAX(messages.Id_em) AS Id_em,
                                     MAX(messages.Id_tr) AS Id_tr,
                                     users.Name,
                                     users.Number,
                                     MAX(users.Image) AS Image
                                 FROM messages
-                                JOIN users ON 
-                                CASE 
-                                    WHEN messages.Id_em = 1 THEN messages.Id_tr = users.ID
-                                    ELSE messages.Id_em = users.ID
-                                END
-                                WHERE messages.Id_tr = 1 OR messages.Id_em = 1
+                                JOIN users ON messages.Id_em = users.ID
+                                WHERE messages.Id_tr = ${res} OR messages.Id_em = ${res}
                                 GROUP BY users.Number, users.Name;`)
             .then((res)=>{
                 this.res.status(200).json(res.rows);

@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import { StyleSheet, View} from 'react-native'
 import Contacts from './Contacts'
-import {User, Message} from '../App'
+import {User, Message} from '@/app/(tabs)/index'
 import Head from './Head';
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -73,6 +73,8 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         marginLeft: 5,
         backgroundColor: "transparent",
-        flex: 1
+        flex: 1,
+        gap: 15,
+        paddingLeft: 10
     }
 })

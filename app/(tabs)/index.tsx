@@ -1,15 +1,15 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { ImageSourcePropType, StatusBar, StyleSheet, View } from 'react-native';
-import Home from './components/Home';
+import Home from '@/components/Home';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
-import Messages from './components/Messages';
-import LoginWap from './components/LoginWap';
+import Messages from '@/components/Messages';
+import LoginWap from '@/components/LoginWap';
 import * as SecureStore from 'expo-secure-store';
-import AddContact from './components/AddContact';
+import AddContact from '@/components/AddContact';
 import axios from 'axios';
-import { API_URL } from './config';
+import { API_URL } from '@/config';
 
 
 const Stack = createStackNavigator();
@@ -40,6 +40,7 @@ const App = ()=>{
 
   const getUsers = async() =>{
     const res : Array<User> = (await axios.get(`${API_URL}server/api/users/contact/${await SecureStore.getItemAsync('phoneNumber')}`)).data;
+    console.log(res);
     
     res.map((e: User, index: number)=>{
       setUsers((use: User[])=>{
@@ -76,7 +77,7 @@ const App = ()=>{
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
         <StatusBar />
-        <NavigationContainer>
+        <NavigationContainer independent={true}>
           <Stack.Navigator screenOptions={{
             headerShown: false,
           }}>

@@ -27,27 +27,21 @@ class MessagesController extends ConectDB{
               WHERE (messages.Id_tr = ${this.user_em} OR messages.Id_em = ${this.user_em}) 
                 AND (messages.Id_tr = ${this.user_tr} OR messages.Id_em = ${this.user_tr})
             `);
-        
-            const userEmQueryResult = await this.client.query(`
-              SELECT users.Number FROM messages JOIN users ON messages.Id_em = users.ID WHERE messages.Id_em = ${this.user_em}
-            `);
-            const number_1 = userEmQueryResult.rows.length > 0 ? userEmQueryResult.rows[0].number : null;
-        
 
-            const userTrQueryResult = await this.client.query(`
-              SELECT users.Number FROM messages JOIN users ON messages.Id_tr = users.ID WHERE messages.Id_tr = ${this.user_tr}
-            `);
-            const number_2 = userTrQueryResult.rows.length > 0 ? userTrQueryResult.rows[0].number : null;
-        
-            const newArray = queryResult.rows.map((row: any) => ({
-              number_em: number_1,
-              content: row.content,
-            }));
+            const newArray = await Promise.all(
+              queryResult.rows.map(async (row: any) => {
+                const number = await this.client.query(`SELECT Number FROM users WHERE id = ${row.id_em}`)
+                return {
+                  number_em: number.rows[0].number,
+                  content: row.content,
+                };
+              })
+            );
         
             this.res.status(200).json(newArray);
           } catch (err) {
             console.log(err);
-            this.res.status(500).send('Internal Server Error');
+            this.res.status(500).send('Internal Server Error'+err);
           }
     }
 

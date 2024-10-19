@@ -24,8 +24,6 @@ export default function Home({setUser}: propHome) {
         const res: Array<User> = await (
         await axios.get(`${API_URL}server/api/messages/${await SecureStore.getItemAsync('phoneNumber')}`)
       ).data;
-        console.log(res);
-        
       const updatedUsers = res.map((e: User) => ({
         name: e.name,
         image: e.image,

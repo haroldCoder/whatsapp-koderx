@@ -40,7 +40,6 @@ const App = ()=>{
 
   const getUsers = async() =>{
     const res : Array<User> = (await axios.get(`${API_URL}server/api/users/contact/${await SecureStore.getItemAsync('phoneNumber')}`)).data;
-    console.log(res);
     
     res.map((e: User, index: number)=>{
       setUsers((use: User[])=>{

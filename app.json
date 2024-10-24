@@ -1,25 +1,26 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "whatsapp-koderx",
+    "slug": "whatsapp-koderx",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "@/assets/icon.png",
+    "icon": "@/assets/whatsappdark.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assetssplash.png",
+      "image": "./assets/wpp.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/wpp.png",
+        "backgroundColor": "#000"
+      },
+      "package": "com.koderx.myapp"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +32,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "87cd887e-b465-469c-acf7-60706ede50ac"
+      }
+    },
+    "owner": "koderx"
   }
 }

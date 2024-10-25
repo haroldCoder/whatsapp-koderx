@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { ImageSourcePropType, StatusBar, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StatusBar, StyleSheet } from 'react-native';
 import Home from '@/components/Home';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,11 +10,12 @@ import * as SecureStore from 'expo-secure-store';
 import AddContact from '@/components/AddContact';
 import axios from 'axios';
 import { API_URL } from '@/config';
+import Splashscreen from '@/components/Splashscreen';
 
 
 const Stack = createStackNavigator();
 
-export interface User{
+export interface User {
   name: string,
   image: string | any,
   number: string,
@@ -24,7 +25,7 @@ export interface User{
   id_tr?: number
 }
 
-export interface Message{
+export interface Message {
   name: string,
   image: string,
   message: any,
@@ -33,16 +34,17 @@ export interface Message{
   id_tr?: number
 }
 
-const App = ()=>{
+const App = () => {
   const [users, setUsers] = useState<Array<User>>([]);
-  const [user, setUser] = useState<Message>({name: "", image: "", message: [], number: ""});
+  const [user, setUser] = useState<Message>({ name: "", image: "", message: [], number: "" });
   const [loggin, setLoggin] = useState<boolean>(false)
+  const [splash, setSplash] = useState(true)
 
-  const getUsers = async() =>{
-    const res : Array<User> = (await axios.get(`${API_URL}server/api/users/contact/${await SecureStore.getItemAsync('phoneNumber')}`)).data;
-    
-    res.map((e: User, index: number)=>{
-      setUsers((use: User[])=>{
+  const getUsers = async () => {
+    const res: Array<User> = (await axios.get(`${API_URL}server/api/users/contact/${await SecureStore.getItemAsync('phoneNumber')}`)).data;
+
+    res.map((e: User, index: number) => {
+      setUsers((use: User[]) => {
         use[index] = {
           name: e.name,
           image: e.image,
@@ -51,22 +53,32 @@ const App = ()=>{
           id_user_add: e.id_user_add
         }
         return use;
+      })
     })
-    })    
   }
 
+  useEffect(() => {
+    const loadApp = async () => {
+      await new Promise(resolve => setTimeout(resolve, 3000)); 
+      setSplash(false); 
+    };
 
-  useEffect(()=>{
-    const timer = setTimeout(()=>{
+    loadApp();
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
       getisLogin();
       getUsers();
     }, 1500)
-    return ()=>clearInterval(timer)
-  }, [])
+    return () => clearInterval(timer)
+  }, [SecureStore.getItemAsync('isLogin')])
 
-  const getisLogin = async() =>{
+
+
+  const getisLogin = async () => {
     const log = await SecureStore.getItemAsync('isLogin');
-    if(log && log != null && SecureStore.getItemAsync('phoneNumber') != null){
+    if (log && log != null && SecureStore.getItemAsync('phoneNumber') != null) {
       setLoggin(true)
     }
     console.log(log);
@@ -76,46 +88,54 @@ const App = ()=>{
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>
         <StatusBar />
-        <NavigationContainer independent={true}>
-          <Stack.Navigator screenOptions={{
-            headerShown: false,
-          }}>
-            {
-              !loggin ?
-              <Stack.Screen options={{
-              headerStyle: {
-                backgroundColor: "#000",
-              },
-              cardStyle: { backgroundColor: 'black' }
-            }} name='Login' component={LoginWap} />
-            : null
-            }
-            
+        {
+          splash ?
+            <Splashscreen />
+            :
+            <NavigationContainer independent={true}>
+              <Stack.Navigator screenOptions={{
+                headerShown: false,
+              }}>
+                {
+                  !loggin ?
+                    <Stack.Screen options={{
+                      headerStyle: {
+                        backgroundColor: "#000",
+                      },
+                      cardStyle: { backgroundColor: 'black' }
+                    }} name='Login' component={LoginWap} />
+                    : null
+                }
 
-            <Stack.Screen options={{
-              headerStyle: {
-                backgroundColor: "#000",
-              },
-              cardStyle: { backgroundColor: 'black' }
-            }} name="Home" component={()=> <Home setUser={setUser} />} />
-            
-            
-            <Stack.Screen options={{
-              headerStyle: {
-                backgroundColor: "#000",
-              },
-              cardStyle: { backgroundColor: 'black' }
-            }} name='msg' component={()=> <Messages name={user.name} id_tr={user.id_tr} id_em={user.id_em} image={user.image} message={user.message} number={user.number} />} /> 
 
-            <Stack.Screen options={{
-              headerStyle: {
-                backgroundColor: "#000",
-              },
-              cardStyle: { backgroundColor: 'black' }}} name="addContact" component={()=> <AddContact setUser={setUser} users={users} />} />
-          </Stack.Navigator>
-        </NavigationContainer>
+                <Stack.Screen options={{
+                  headerStyle: {
+                    backgroundColor: "#000",
+                  },
+                  cardStyle: { backgroundColor: 'black' }
+                }} name="Home" component={() => <Home setUser={setUser} />} />
+
+
+                <Stack.Screen options={{
+                  headerStyle: {
+                    backgroundColor: "#000",
+                  },
+                  cardStyle: { backgroundColor: 'black' }
+                }} name='msg' component={() => <Messages name={user.name} id_tr={user.id_tr} id_em={user.id_em} image={user.image} message={user.message} number={user.number} />} />
+
+                <Stack.Screen options={{
+                  headerStyle: {
+                    backgroundColor: "#000",
+                  },
+                  cardStyle: { backgroundColor: 'black' }
+                }} name="addContact" component={() => <AddContact setUser={setUser} users={users} />} />
+              </Stack.Navigator>
+
+
+            </NavigationContainer>
+        }
       </SafeAreaView>
-      </SafeAreaProvider>
+    </SafeAreaProvider>
   );
 }
 

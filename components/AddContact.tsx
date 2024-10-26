@@ -9,13 +9,14 @@ import AddNumber from './AddNumber'
 
 interface propaddcontact {
   setUser: Dispatch<SetStateAction<Message>>,
-  users: User[]
+  users: User[],
+  setIsAddNumber: Dispatch<SetStateAction<boolean>>,
+  isAddNumber: boolean
 }
 
-export default function AddContact({ setUser, users }: propaddcontact) {
+export default function AddContact({ setUser, users, setIsAddNumber, isAddNumber }: propaddcontact) {
 
   const navigation = useNavigation<any>();
-  const [isAddNumber, setIsAddNumber] = useState<boolean>(false);
 
   return (
     <View style={{ flex: 1 }}>
@@ -47,8 +48,8 @@ export default function AddContact({ setUser, users }: propaddcontact) {
         </View>
       </View>
       {
-        isAddNumber ?
-          <AddNumber setAddNumber={setIsAddNumber} /> : null
+        isAddNumber &&
+          <AddNumber setAddNumber={setIsAddNumber} />
       }
     </View>
   )

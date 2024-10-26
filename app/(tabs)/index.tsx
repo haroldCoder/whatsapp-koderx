@@ -39,6 +39,7 @@ const App = () => {
   const [user, setUser] = useState<Message>({ name: "", image: "", message: [], number: "" });
   const [loggin, setLoggin] = useState<boolean>(false)
   const [splash, setSplash] = useState(true)
+  const [isAddNumber, setIsAddNumber] = useState<boolean>(false);
 
   const getUsers = async () => {
     const res: Array<User> = (await axios.get(`${API_URL}server/api/users/contact/${await SecureStore.getItemAsync('phoneNumber')}`)).data;
@@ -72,7 +73,7 @@ const App = () => {
       getUsers();
     }, 1500)
     return () => clearInterval(timer)
-  }, [SecureStore.getItemAsync('isLogin')])
+  }, [SecureStore.getItemAsync('isLogin'), isAddNumber])
 
 
 
@@ -128,7 +129,7 @@ const App = () => {
                     backgroundColor: "#000",
                   },
                   cardStyle: { backgroundColor: 'black' }
-                }} name="addContact" component={() => <AddContact setUser={setUser} users={users} />} />
+                }} name="addContact" component={() => <AddContact isAddNumber={isAddNumber} setIsAddNumber={setIsAddNumber} setUser={setUser} users={users} />} />
               </Stack.Navigator>
 
 

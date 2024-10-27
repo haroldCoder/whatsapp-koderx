@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { Message, User } from "@/constants/main";
@@ -9,6 +9,7 @@ import AddNumber from "./AddNumber";
 import axios from "axios";
 import { API_URL } from "@/config";
 import * as SecureStore from "expo-secure-store";
+import useSWR, { mutate } from "swr";
 
 interface propaddcontact {
   setUser: Dispatch<SetStateAction<Message>>;
@@ -16,36 +17,34 @@ interface propaddcontact {
   isAddNumber: boolean;
 }
 
+const getUsers = async () => {
+  const phoneNumber = await SecureStore.getItemAsync("phoneNumber");
+  const res: Array<User> = (
+    await axios.get(`${API_URL}server/api/users/contact/${phoneNumber}`)
+  ).data;
+
+  const users = res.map((e: User, index: number) => ({
+    name: e.name,
+    image: e.image,
+    number: e.number,
+    id_user_main: e.id_user_main,
+    id_user_add: e.id_user_add,
+  }));
+
+  return users;
+};
+
 export default function AddContact({
   setUser,
   setIsAddNumber,
   isAddNumber,
 }: propaddcontact) {
-  const [users, setUsers] = useState<Array<User>>([]);
-
-  const getUsers = async () => {
-    const phoneNumber = await SecureStore.getItemAsync("phoneNumber");
-    const res: Array<User> = (
-      await axios.get(`${API_URL}server/api/users/contact/${phoneNumber}`)
-    ).data;
-
-    const users = res.map((e: User, index: number) => ({
-      name: e.name,
-      image: e.image,
-      number: e.number,
-      id_user_main: e.id_user_main,
-      id_user_add: e.id_user_add,
-    }));
-
-    setUsers(users)
-    return users
-  };
-
+  const { data: users, error, isLoading} = useSWR("users", getUsers);
+ 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      getUsers();
-    }, 1500);
-    return () => clearInterval(timer);
+    if(isAddNumber){
+      mutate("users")
+    }
   }, [isAddNumber]);
 
   const navigation = useNavigation<any>();

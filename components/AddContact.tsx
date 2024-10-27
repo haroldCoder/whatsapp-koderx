@@ -42,7 +42,7 @@ export default function AddContact({
   const { data: users, error, isLoading} = useSWR("users", getUsers);
  
   useEffect(() => {
-    if(isAddNumber){
+    if(!isAddNumber){
       mutate("users")
     }
   }, [isAddNumber]);
@@ -50,6 +50,7 @@ export default function AddContact({
   const navigation = useNavigation<any>();
 
   return (
+    !isLoading &&
     <View style={{ flex: 1 }}>
       <View
         style={{

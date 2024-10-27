@@ -1,6 +1,19 @@
 import axios from "axios";
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
-import { View, Text, TextInput, Image } from "react-native";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  BackHandler,
+  Pressable,
+} from "react-native";
 import { Button } from "react-native-paper";
 import { API_URL } from "../config";
 import * as SecureStore from "expo-secure-store";
@@ -15,6 +28,20 @@ export default function AddNumber({ setAddNumber }: Props) {
   const idUser = useRef<number[]>([]);
   const [number, setNumber] = useState<string>("");
   const [msg, setMsg] = useState<boolean>(false);
+
+  useEffect(() => {
+    const onBackPress = () => {
+      setAddNumber(false);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      onBackPress
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   const AddContact = async () => {
     await axios
@@ -37,12 +64,14 @@ export default function AddNumber({ setAddNumber }: Props) {
               })
               .then(() => {
                 setIdAdded(true);
+                setMsg(true);
                 setTimeout(() => {
                   setAddNumber(false);
                 }, 1000);
               })
               .catch((err) => {
                 setIdAdded(false);
+                setMsg(true);
                 console.log(idUser.current[0], idUser.current[1]);
               });
           })
@@ -54,11 +83,10 @@ export default function AddNumber({ setAddNumber }: Props) {
         setIdAdded(false);
         console.log(err);
       });
-    setMsg(true);
   };
 
   return (
-    <View
+    <Pressable
       style={{
         position: "absolute",
         top: 0,
@@ -69,49 +97,52 @@ export default function AddNumber({ setAddNumber }: Props) {
         justifyContent: "center",
         alignItems: "center",
       }}
+      onPress={() => setAddNumber(false)}
     >
-      <View
-        style={{
-          backgroundColor: "#FFFFFF80",
-          height: 400,
-          width: 280,
-          padding: 18,
-          borderRadius: 18,
-          justifyContent: "space-between",
-        }}
-      >
-        <View style={{ alignItems: "center" }}>
-          <Image source={wppdark} style={{ width: 60, height: 60 }} />
-        </View>
-        <TextInput
-          onChange={(event: any) => {
-            setNumber(event.nativeEvent.text);
-          }}
+      <Pressable onPress={(e) => e.stopPropagation()}>
+        <View
           style={{
-            borderBottomColor: "#AAA",
-            color: "#FFF",
-            marginTop: 20,
-            borderBottomWidth: 1,
-            fontSize: 15,
+            backgroundColor: "#FFFFFF80",
+            height: 400,
+            width: 280,
+            padding: 18,
+            borderRadius: 18,
+            justifyContent: "space-between",
           }}
-          placeholderTextColor={"#FFFFFFBB"}
-          placeholder="Number of contact"
-          keyboardType="phone-pad"
-        />
-        <Button
-          onPress={AddContact}
-          style={{ marginTop: 40, backgroundColor: "#FFF", borderRadius: 10 }}
         >
-          Add Contact
-        </Button>
-        <View>
-          {msg ? (
-            <Text style={{ color: isAdded ? "#0F0" : "#F00", margin: 10 }}>
-              {isAdded ? "Usuario agregado" : "No se pudo agregar el usuario"}
-            </Text>
-          ) : null}
+          <View style={{ alignItems: "center" }}>
+            <Image source={wppdark} style={{ width: 60, height: 60 }} />
+          </View>
+          <TextInput
+            onChange={(event: any) => {
+              setNumber(event.nativeEvent.text);
+            }}
+            style={{
+              borderBottomColor: "#AAA",
+              color: "#FFF",
+              marginTop: 20,
+              borderBottomWidth: 1,
+              fontSize: 15,
+            }}
+            placeholderTextColor={"#FFFFFFBB"}
+            placeholder="Number of contact"
+            keyboardType="phone-pad"
+          />
+          <Button
+            onPress={AddContact}
+            style={{ marginTop: 40, backgroundColor: "#FFF", borderRadius: 10 }}
+          >
+            Add Contact
+          </Button>
+          <View>
+            {msg ? (
+              <Text style={{ color: isAdded ? "#0F0" : "#F00", margin: 10 }}>
+                {isAdded ? "Usuario agregado" : "No se pudo agregar el usuario"}
+              </Text>
+            ) : null}
+          </View>
         </View>
-      </View>
-    </View>
+      </Pressable>
+    </Pressable>
   );
 }

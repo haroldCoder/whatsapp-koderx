@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { View, Image, Text, TextInput, NativeSyntheticEvent, TextInputChangeEventData, ScrollView } from 'react-native'
-import { Message } from '@/app/(tabs)/index'
+import { Message } from '@/constants/main';
 import Icon from "react-native-vector-icons/FontAwesome";
 import { GestureHandlerRootView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native'

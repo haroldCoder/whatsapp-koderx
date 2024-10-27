@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useState, useEffect } from 'react'
 import { ImageSourcePropType, TouchableOpacity, View } from 'react-native'
 import { Image, Text } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
-import { Message } from '@/app/(tabs)/index';
+import { Message } from '@/constants/main';
 import axios from 'axios';
 import { API_URL } from '../config';
 

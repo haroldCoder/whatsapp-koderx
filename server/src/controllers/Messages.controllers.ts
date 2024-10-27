@@ -19,22 +19,29 @@ class MessagesController extends ConectDB {
     try {
       this.user_em = user_em;
       this.user_tr = user_tr;
+      let queryResult;
 
-      const queryResult = await this.client.query(`
-              SELECT content, Id_tr, Id_em
+      if (this.user_em == this.user_tr) {
+        queryResult = await this.client.query(`
+              SELECT content, Id_tr, Id_em, number
               FROM messages 
               JOIN users ON messages.Id_em = users.ID 
-              WHERE (messages.Id_tr = ${this.user_em} OR messages.Id_em = ${this.user_em}) 
-                AND (messages.Id_tr = ${this.user_tr} OR messages.Id_em = ${this.user_tr})
+              WHERE messages.Id_em = ${this.user_em} AND messages.Id_tr = ${this.user_tr} 
             `);
+      } else {
+        queryResult = await this.client.query(`
+          SELECT content, Id_tr, Id_em, number
+          FROM messages 
+          JOIN users ON messages.Id_em = users.ID 
+          WHERE (messages.Id_tr = ${this.user_em} OR messages.Id_em = ${this.user_em}) 
+            AND (messages.Id_tr = ${this.user_tr} OR messages.Id_em = ${this.user_tr})
+        `);
+      }
 
       const newArray = await Promise.all(
         queryResult.rows.map(async (row: any) => {
-          const number = await this.client.query(
-            `SELECT Number FROM users WHERE id = ${row.id_em}`
-          );
           return {
-            number_em: number.rows[0].number,
+            number_em: row.number,
             content: row.content,
           };
         })
@@ -78,8 +85,9 @@ class MessagesController extends ConectDB {
         console.log(res);
 
         this.client
-          .query(`SELECT 
-               MAX(messages.Id_em) AS Id_em,
+          .query(
+            `SELECT 
+               MIN(messages.Id_em) AS Id_em,
                MAX(messages.Id_tr) AS Id_tr,
                users.Name,
                users.Number,
